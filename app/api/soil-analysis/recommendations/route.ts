@@ -1,4 +1,5 @@
 import { generateText } from "ai"
+import { createOpenAI } from "@ai-sdk/openai"
 
 export async function POST(request: Request) {
   try {
@@ -50,16 +51,24 @@ Provide detailed recommendations on:
 
 Make the recommendations practical and specific for Egyptian farmers.`
 
-    const { text } = await generateText({
-      model: "groq/llama-3.3-70b-versatile",
-      prompt,
-      temperature: 0.7,
-      maxTokens: 1000,
+    const openai = createOpenAI({
+      apiKey: process.env.OPENAI_API_KEY || '',
     })
 
-    return Response.json({ recommendations: text })
+    const { text } = await generateText({
+      model: openai('gpt-3.5-turbo'),
+      prompt,
+      temperature: 0.7,
+    })
+
+    return new Response(JSON.stringify({ recommendations: text }), {
+      headers: { 'Content-Type': 'application/json' }
+    })
   } catch (error) {
     console.error("[v0] Error generating recommendations:", error)
-    return Response.json({ error: "Failed to generate recommendations" }, { status: 500 })
+    return new Response(JSON.stringify({ error: "Failed to generate recommendations" }), { 
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    })
   }
 }

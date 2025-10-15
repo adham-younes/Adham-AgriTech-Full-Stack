@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Loader2, Send, Sparkles, User, Bot } from "lucide-react"
-import { useChat } from "ai"
+// import { useChat } from "ai/react" // Not available in current AI SDK version
 
 export default function AIAssistantPage() {
   const [lang, setLang] = useState<"ar" | "en">("ar")
@@ -18,10 +18,51 @@ export default function AIAssistantPage() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   )
 
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
-    api: "/api/ai-assistant",
-    body: { language: lang },
-    onFinish: async (message) => {
+  // Simple chat implementation to replace useChat
+  const [messages, setMessages] = useState<any[]>([])
+  const [input, setInput] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(e.target.value)
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!input.trim() || isLoading) return
+
+    const userMessage = { role: "user", content: input }
+    const newMessages = [...messages, userMessage]
+    setMessages(newMessages)
+    setInput("")
+    setIsLoading(true)
+
+    try {
+      const response = await fetch("/api/ai-assistant", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: newMessages, language: lang }),
+      })
+
+      if (!response.ok) throw new Error("Failed to get AI response")
+
+      const reader = response.body?.getReader()
+      if (!reader) throw new Error("No response body")
+
+      let assistantMessage = ""
+      const decoder = new TextDecoder()
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        
+        const chunk = decoder.decode(value)
+        assistantMessage += chunk
+      }
+
+      const finalMessages = [...newMessages, { role: "assistant", content: assistantMessage }]
+      setMessages(finalMessages)
+      
       // Save to database
       try {
         const {
@@ -30,16 +71,20 @@ export default function AIAssistantPage() {
         if (user) {
           await supabase.from("ai_chat_history").insert({
             user_id: user.id,
-            message: messages[messages.length - 2]?.content || "",
-            response: message.content,
+            message: userMessage.content,
+            response: assistantMessage,
             language: lang,
           })
         }
       } catch (error) {
         console.error("[v0] Error saving chat history:", error)
       }
-    },
-  })
+    } catch (error) {
+      console.error("[v0] Error in chat:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })

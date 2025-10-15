@@ -47,7 +47,6 @@ export default function PartnersPage() {
                     width={160}
                     height={60}
                     className="h-auto w-full max-w-[160px] object-contain opacity-70 transition-opacity group-hover:opacity-100"
-                    query={`${partner.name} logo white on transparent background`}
                   />
                 </div>
                 <h3 className="mb-2 text-center text-lg font-semibold">{partner.name}</h3>
@@ -76,7 +75,6 @@ export default function PartnersPage() {
                     width={140}
                     height={50}
                     className="h-auto w-full max-w-[140px] object-contain opacity-70 transition-opacity group-hover:opacity-100"
-                    query={`${partner.name} agricultural company logo`}
                   />
                 </div>
                 <h3 className="mb-2 text-center text-lg font-semibold">{partner.name}</h3>

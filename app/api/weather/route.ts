@@ -7,7 +7,10 @@ export async function GET(request: Request) {
     const apiKey = process.env.OPENWEATHER_API_KEY
     if (!apiKey) {
       console.error("[v0] OpenWeather API key not configured")
-      return Response.json({ error: "API key not configured" }, { status: 500 })
+      return new Response(JSON.stringify({ error: "API key not configured" }), { 
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      })
     }
 
     // Fetch current weather
@@ -17,7 +20,10 @@ export async function GET(request: Request) {
 
     if (!currentResponse.ok) {
       console.error("[v0] OpenWeather API error:", await currentResponse.text())
-      return Response.json({ error: "Failed to fetch weather data" }, { status: currentResponse.status })
+      return new Response(JSON.stringify({ error: "Failed to fetch weather data" }), { 
+        status: currentResponse.status,
+        headers: { 'Content-Type': 'application/json' }
+      })
     }
 
     const currentData = await currentResponse.json()
@@ -29,7 +35,10 @@ export async function GET(request: Request) {
 
     if (!forecastResponse.ok) {
       console.error("[v0] OpenWeather forecast API error:", await forecastResponse.text())
-      return Response.json({ error: "Failed to fetch forecast data" }, { status: forecastResponse.status })
+      return new Response(JSON.stringify({ error: "Failed to fetch forecast data" }), { 
+        status: forecastResponse.status,
+        headers: { 'Content-Type': 'application/json' }
+      })
     }
 
     const forecastData = await forecastResponse.json()
@@ -51,7 +60,7 @@ export async function GET(request: Request) {
       }
     }
 
-    return Response.json({
+    return new Response(JSON.stringify({
       current: {
         temp: currentData.main.temp,
         feels_like: currentData.main.feels_like,
@@ -62,9 +71,14 @@ export async function GET(request: Request) {
         condition: currentData.weather[0].description,
       },
       forecast: dailyForecasts,
+    }), {
+      headers: { 'Content-Type': 'application/json' }
     })
   } catch (error) {
     console.error("[v0] Error fetching weather:", error)
-    return Response.json({ error: "Failed to fetch weather data" }, { status: 500 })
+    return new Response(JSON.stringify({ error: "Failed to fetch weather data" }), { 
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    })
   }
 }
