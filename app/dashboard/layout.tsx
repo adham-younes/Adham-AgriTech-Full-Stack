@@ -3,6 +3,7 @@ import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { DashboardSidebar } from "@/components/dashboard/sidebar"
 import { DashboardHeader } from "@/components/dashboard/header"
+import { ErrorBoundary } from "@/components/error-boundary"
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
@@ -22,7 +23,11 @@ export default async function DashboardLayout({ children }: { children: React.Re
       <DashboardSidebar user={user} profile={profile} />
       <div className="flex flex-1 flex-col overflow-hidden">
         <DashboardHeader user={user} profile={profile} />
-        <main className="flex-1 overflow-y-auto p-6">{children}</main>
+        <ErrorBoundary>
+          <main className="flex-1 overflow-y-auto p-6" role="main" aria-label="محتوى لوحة التحكم">
+            {children}
+          </main>
+        </ErrorBoundary>
       </div>
     </div>
   )

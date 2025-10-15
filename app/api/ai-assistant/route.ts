@@ -1,8 +1,34 @@
 import { streamText } from "ai"
+import { rateLimit, RateLimitConfigs } from "@/lib/middleware/rate-limit"
+import { handleAPIError, APIErrors } from "@/lib/errors/api-errors"
+import { createClient } from "@/lib/supabase/server"
 
 export async function POST(request: Request) {
   try {
-    const { messages, language } = await request.json()
+    // Apply rate limiting
+    const rateLimitResult = await rateLimit(request, RateLimitConfigs.AI_ASSISTANT)
+    if (!rateLimitResult.success) {
+      return Response.json(rateLimitResult.error, { status: 429 })
+    }
+
+    // Verify authentication
+    const supabase = await createClient()
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    
+    if (authError || !user) {
+      return Response.json(APIErrors.Unauthorized().toJSON(), { status: 401 })
+    }
+
+    // Validate request body
+    const body = await request.json()
+    const { messages, language } = body
+
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
+      return Response.json(
+        APIErrors.ValidationError({ messages: "Messages array is required and must not be empty" }).toJSON(),
+        { status: 400 }
+      )
+    }
 
     const systemPrompt =
       language === "ar"
@@ -35,7 +61,6 @@ Provide clear and helpful answers in English.`
 
     return result.toDataStreamResponse()
   } catch (error) {
-    console.error("[v0] Error in AI assistant:", error)
-    return Response.json({ error: "Failed to process request" }, { status: 500 })
+    return handleAPIError(error)
   }
 }

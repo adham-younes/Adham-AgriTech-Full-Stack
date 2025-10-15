@@ -36,25 +36,30 @@ export function DashboardHeader({ user, profile }: HeaderProps) {
       .toUpperCase() || "U"
 
   return (
-    <header className="flex h-16 items-center justify-between border-b border-white/5 bg-black/40 backdrop-blur-xl px-6 shadow-3d">
+    <header className="flex h-16 items-center justify-between border-b border-white/5 bg-black/40 backdrop-blur-xl px-6 shadow-3d" role="banner">
       <div className="flex items-center gap-4">
         <h1 className="text-xl font-bold bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">
           مرحباً، {profile?.full_name || "مستخدم"}
         </h1>
-        <span className="rounded-full bg-primary/20 px-3 py-1 text-xs font-medium text-primary border border-primary/30 shadow-glow">
+        <span 
+          className="rounded-full bg-primary/20 px-3 py-1 text-xs font-medium text-primary border border-primary/30 shadow-glow"
+          role="status"
+          aria-label={`دور المستخدم: ${profile?.role === "farmer" ? "مزارع" : profile?.role === "engineer" ? "مهندس زراعي" : "مدير"}`}
+        >
           {profile?.role === "farmer" ? "مزارع" : profile?.role === "engineer" ? "مهندس زراعي" : "مدير"}
         </span>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3" role="toolbar" aria-label="أدوات المستخدم">
         {/* Notifications */}
         <Button
           variant="ghost"
           size="icon"
+          aria-label="الإشعارات - لديك إشعارات جديدة"
           className="relative hover:bg-white/5 transition-all duration-300 hover:shadow-glow"
         >
-          <Bell className="h-5 w-5" />
-          <span className="absolute right-1 top-1 flex h-2 w-2">
+          <Bell className="h-5 w-5" aria-hidden="true" />
+          <span className="absolute right-1 top-1 flex h-2 w-2" aria-label="لديك إشعارات جديدة">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-primary shadow-glow" />
           </span>
@@ -63,7 +68,11 @@ export function DashboardHeader({ user, profile }: HeaderProps) {
         {/* User Menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="gap-2 hover:bg-white/5 transition-all duration-300">
+            <Button 
+              variant="ghost" 
+              className="gap-2 hover:bg-white/5 transition-all duration-300"
+              aria-label={`قائمة المستخدم - ${profile?.full_name || "مستخدم"}`}
+            >
               <Avatar className="h-8 w-8 border-2 border-primary/30 shadow-glow">
                 <AvatarFallback className="bg-gradient-to-br from-primary to-primary/70 text-white text-xs font-bold">
                   {initials}
