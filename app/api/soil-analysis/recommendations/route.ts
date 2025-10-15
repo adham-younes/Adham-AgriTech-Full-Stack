@@ -1,7 +1,24 @@
 import { generateText } from "ai"
+import { rateLimit, RateLimitConfigs } from "@/lib/middleware/rate-limit"
+import { handleAPIError, APIErrors, successResponse } from "@/lib/errors/api-errors"
+import { createClient } from "@/lib/supabase/server"
 
 export async function POST(request: Request) {
   try {
+    // Apply rate limiting
+    const rateLimitResult = await rateLimit(request, RateLimitConfigs.SOIL_ANALYSIS)
+    if (!rateLimitResult.success) {
+      return Response.json(rateLimitResult.error, { status: 429 })
+    }
+
+    // Verify authentication
+    const supabase = await createClient()
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    
+    if (authError || !user) {
+      return Response.json(APIErrors.Unauthorized().toJSON(), { status: 401 })
+    }
+
     const body = await request.json()
     const {
       ph_level,
@@ -12,6 +29,31 @@ export async function POST(request: Request) {
       moisture_percent,
       language,
     } = body
+
+    // Validate required fields
+    if (!ph_level || !nitrogen_ppm || !phosphorus_ppm || !potassium_ppm) {
+      return Response.json(
+        APIErrors.ValidationError({ 
+          message: "Required fields: ph_level, nitrogen_ppm, phosphorus_ppm, potassium_ppm" 
+        }).toJSON(),
+        { status: 400 }
+      )
+    }
+
+    // Validate ranges
+    if (ph_level < 0 || ph_level > 14) {
+      return Response.json(
+        APIErrors.InvalidInput("ph_level (must be between 0 and 14)").toJSON(),
+        { status: 400 }
+      )
+    }
+
+    if (nitrogen_ppm < 0 || phosphorus_ppm < 0 || potassium_ppm < 0) {
+      return Response.json(
+        APIErrors.InvalidInput("nutrient values (must be positive)").toJSON(),
+        { status: 400 }
+      )
+    }
 
     const prompt =
       language === "ar"
@@ -57,9 +99,12 @@ Make the recommendations practical and specific for Egyptian farmers.`
       maxTokens: 1000,
     })
 
-    return Response.json({ recommendations: text })
+    return successResponse(
+      { recommendations: text },
+      "Recommendations generated successfully",
+      "تم إنشاء التوصيات بنجاح"
+    )
   } catch (error) {
-    console.error("[v0] Error generating recommendations:", error)
-    return Response.json({ error: "Failed to generate recommendations" }, { status: 500 })
+    return handleAPIError(error)
   }
 }

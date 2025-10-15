@@ -45,7 +45,7 @@ export function DashboardSidebar({ user, profile }: SidebarProps) {
   const pathname = usePathname()
 
   return (
-    <aside className="flex w-64 flex-col border-l bg-sidebar">
+    <aside className="flex w-64 flex-col border-l bg-sidebar" role="navigation" aria-label="القائمة الجانبية الرئيسية">
       {/* Logo */}
       <div className="flex h-16 items-center gap-3 border-b border-sidebar-border px-6">
         <div className="glow-primary flex h-10 w-10 items-center justify-center rounded-xl bg-primary shadow-lg">
@@ -58,13 +58,15 @@ export function DashboardSidebar({ user, profile }: SidebarProps) {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-1 overflow-y-auto p-4">
+      <nav className="flex-1 space-y-1 overflow-y-auto p-4" aria-label="روابط التنقل الرئيسية">
         {navigation.map((item) => {
           const isActive = pathname === item.href
           return (
             <Link
               key={item.href}
               href={item.href}
+              aria-label={`${item.name} - ${item.nameEn}`}
+              aria-current={isActive ? "page" : undefined}
               className={cn(
                 "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all",
                 isActive
@@ -72,7 +74,7 @@ export function DashboardSidebar({ user, profile }: SidebarProps) {
                   : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-accent-foreground",
               )}
             >
-              <item.icon className="h-5 w-5" />
+              <item.icon className="h-5 w-5" aria-hidden="true" />
               <span>{item.name}</span>
             </Link>
           )
