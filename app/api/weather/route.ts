@@ -1,13 +1,21 @@
+const cache = new Map<string, { timestamp: number; payload: any }>()
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url)
-    const location = searchParams.get("location") || "Cairo,EG"
-    const lang = searchParams.get("lang") || "en"
+    const location = (searchParams.get("location") || "Cairo,EG").trim()
+    const lang = (searchParams.get("lang") || "en").trim()
 
     const apiKey = process.env.OPENWEATHER_API_KEY
     if (!apiKey) {
       console.error("[v0] OpenWeather API key not configured")
       return Response.json({ error: "API key not configured" }, { status: 500 })
+    }
+
+    const cacheKey = `${location}|${lang}`
+    const cached = cache.get(cacheKey)
+    if (cached && Date.now() - cached.timestamp < 5 * 60 * 1000) {
+      return Response.json(cached.payload, { headers: { "Cache-Control": "s-maxage=300, stale-while-revalidate=60" } })
     }
 
     // Fetch current weather
@@ -34,24 +42,33 @@ export async function GET(request: Request) {
 
     const forecastData = await forecastResponse.json()
 
-    // Process forecast data to get daily forecasts
-    const dailyForecasts = []
-    const processedDates = new Set()
-
-    for (const item of forecastData.list) {
-      const date = new Date(item.dt * 1000).toISOString().split("T")[0]
-      if (!processedDates.has(date) && dailyForecasts.length < 7) {
-        processedDates.add(date)
-        dailyForecasts.push({
-          date: new Date(item.dt * 1000).toISOString(),
-          temp_max: item.main.temp_max,
-          temp_min: item.main.temp_min,
-          condition: item.weather[0].description,
+    // Process forecast data to aggregate daily highs/lows and first condition
+    const dailyMap = new Map<string, { dateIso: string; max: number; min: number; condition: string }>()
+    for (const item of forecastData.list as Array<any>) {
+      const dateKey = new Date(item.dt * 1000).toISOString().split("T")[0]
+      const entry = dailyMap.get(dateKey)
+      const tempMax = Number(item.main.temp_max)
+      const tempMin = Number(item.main.temp_min)
+      const condition = item.weather?.[0]?.description ?? ""
+      if (!entry) {
+        dailyMap.set(dateKey, {
+          dateIso: new Date(item.dt * 1000).toISOString(),
+          max: tempMax,
+          min: tempMin,
+          condition,
         })
+      } else {
+        entry.max = Math.max(entry.max, tempMax)
+        entry.min = Math.min(entry.min, tempMin)
+        // keep earliest condition
       }
     }
+    const dailyForecasts = Array.from(dailyMap.entries())
+      .sort((a, b) => (a[0] < b[0] ? -1 : 1))
+      .slice(0, 7)
+      .map(([, v]) => ({ date: v.dateIso, temp_max: v.max, temp_min: v.min, condition: v.condition }))
 
-    return Response.json({
+    const payload = {
       current: {
         temp: currentData.main.temp,
         feels_like: currentData.main.feels_like,
@@ -62,7 +79,10 @@ export async function GET(request: Request) {
         condition: currentData.weather[0].description,
       },
       forecast: dailyForecasts,
-    })
+    }
+
+    cache.set(cacheKey, { timestamp: Date.now(), payload })
+    return Response.json(payload, { headers: { "Cache-Control": "s-maxage=300, stale-while-revalidate=60" } })
   } catch (error) {
     console.error("[v0] Error fetching weather:", error)
     return Response.json({ error: "Failed to fetch weather data" }, { status: 500 })

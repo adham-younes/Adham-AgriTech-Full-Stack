@@ -1,8 +1,31 @@
 import { generateText } from "ai"
+import { z } from "zod"
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json()
+    const json = await request.json().catch(() => null)
+    if (!json) {
+      return Response.json({ error: "Invalid JSON body" }, { status: 400 })
+    }
+
+    const requestSchema = z.object({
+      ph_level: z.coerce.number().min(0).max(14),
+      nitrogen_ppm: z.coerce.number().min(0),
+      phosphorus_ppm: z.coerce.number().min(0),
+      potassium_ppm: z.coerce.number().min(0),
+      organic_matter_percent: z.coerce.number().min(0).max(100).optional(),
+      moisture_percent: z.coerce.number().min(0).max(100).optional(),
+      language: z.enum(["ar", "en"]).optional().default("ar"),
+    })
+
+    const parsed = requestSchema.safeParse(json)
+    if (!parsed.success) {
+      return Response.json(
+        { error: "Validation failed", details: parsed.error.flatten() },
+        { status: 400 },
+      )
+    }
+
     const {
       ph_level,
       nitrogen_ppm,
@@ -11,7 +34,7 @@ export async function POST(request: Request) {
       organic_matter_percent,
       moisture_percent,
       language,
-    } = body
+    } = parsed.data
 
     const prompt =
       language === "ar"
@@ -54,7 +77,7 @@ Make the recommendations practical and specific for Egyptian farmers.`
       model: "groq/llama-3.3-70b-versatile",
       prompt,
       temperature: 0.7,
-      maxTokens: 1000,
+      maxTokens: 800,
     })
 
     return Response.json({ recommendations: text })
