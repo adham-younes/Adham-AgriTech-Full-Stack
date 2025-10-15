@@ -32,13 +32,13 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
-      <div>
-        <h2 className="text-3xl font-bold">لوحة التحكم</h2>
-        <p className="text-muted-foreground">نظرة عامة على مزارعك وحقولك</p>
+      <div className="glass-card p-6 rounded-2xl shadow-3d">
+        <h2 className="text-4xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+          لوحة التحكم
+        </h2>
+        <p className="text-gray-400 mt-2">نظرة عامة على مزارعك وحقولك</p>
       </div>
 
-      {/* Stats Cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatsCard title="المزارع" value={farmsCount || 0} icon={<Sprout className="h-5 w-5" />} trend="+2 هذا الشهر" />
         <StatsCard title="الحقول" value={fieldsCount || 0} icon={<MapPin className="h-5 w-5" />} trend="+5 هذا الشهر" />
@@ -58,10 +58,9 @@ export default async function DashboardPage() {
         />
       </div>
 
-      {/* Main Content Grid */}
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Weather Widget */}
-        <Card>
+        <Card className="glass-card border-primary/20 shadow-3d hover:shadow-3d-lg transition-all duration-300">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Cloud className="h-5 w-5" />
@@ -96,7 +95,7 @@ export default async function DashboardPage() {
         </Card>
 
         {/* Alerts */}
-        <Card>
+        <Card className="glass-card border-primary/20 shadow-3d hover:shadow-3d-lg transition-all duration-300">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <AlertTriangle className="h-5 w-5" />
@@ -131,8 +130,7 @@ export default async function DashboardPage() {
         </Card>
       </div>
 
-      {/* Quick Actions */}
-      <Card>
+      <Card className="glass-card border-primary/20 shadow-3d">
         <CardHeader>
           <CardTitle>إجراءات سريعة</CardTitle>
         </CardHeader>
@@ -140,7 +138,7 @@ export default async function DashboardPage() {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <QuickActionButton title="إضافة مزرعة" href="/dashboard/farms/new" />
             <QuickActionButton title="إضافة حقل" href="/dashboard/fields/new" />
-            <QuickActionButton title="تحليل التربة" href="/dashboard/soil/new" />
+            <QuickActionButton title="تحليل التربة" href="/dashboard/soil-analysis/new" />
             <QuickActionButton title="جدولة الري" href="/dashboard/irrigation/new" />
           </div>
         </CardContent>
@@ -163,17 +161,17 @@ function StatsCard({
   trendPositive?: boolean
 }) {
   return (
-    <Card>
+    <Card className="glass-card border-primary/20 shadow-3d hover:shadow-3d-lg transition-all duration-300 hover:scale-105">
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-muted-foreground">{title}</p>
-            <p className="text-2xl font-bold mt-2">{value}</p>
-            {trend && (
-              <p className={`text-xs mt-1 ${trendPositive ? "text-primary" : "text-muted-foreground"}`}>{trend}</p>
-            )}
+            <p className="text-sm font-medium text-gray-400">{title}</p>
+            <p className="text-3xl font-bold mt-2 text-white">{value}</p>
+            {trend && <p className={`text-xs mt-1 ${trendPositive ? "text-primary" : "text-gray-400"}`}>{trend}</p>}
           </div>
-          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">{icon}</div>
+          <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/20 text-primary shadow-inner group-hover:shadow-glow transition-all duration-300">
+            {icon}
+          </div>
         </div>
       </CardContent>
     </Card>
@@ -184,9 +182,9 @@ function QuickActionButton({ title, href }: { title: string; href: string }) {
   return (
     <a
       href={href}
-      className="flex items-center justify-center rounded-lg border border-dashed border-primary/50 p-4 text-center transition-colors hover:border-primary hover:bg-primary/5"
+      className="glass-card flex items-center justify-center rounded-xl border-primary/30 p-6 text-center transition-all duration-300 hover:border-primary hover:scale-105 hover:shadow-glow"
     >
-      <span className="text-sm font-medium">{title}</span>
+      <span className="text-sm font-medium text-white">{title}</span>
     </a>
   )
 }

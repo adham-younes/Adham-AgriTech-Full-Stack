@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { createBrowserClient } from "@supabase/ssr"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Plus, Loader2, TrendingUp, TrendingDown, Minus } from 'lucide-react'
+import { Plus, Loader2, TrendingUp, TrendingDown, Minus } from "lucide-react"
 import Link from "next/link"
 
 export default function SoilAnalysisPage() {
@@ -77,13 +77,20 @@ export default function SoilAnalysisPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">{t[lang].title}</h1>
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
+          {t[lang].title}
+        </h1>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={() => setLang(lang === "ar" ? "en" : "ar")}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setLang(lang === "ar" ? "en" : "ar")}
+            className="glass-card border-white/10 hover:border-green-500/50 hover:shadow-glow transition-all"
+          >
             {lang === "ar" ? "EN" : "ع"}
           </Button>
           <Link href="/dashboard/soil-analysis/new">
-            <Button className="gap-2">
+            <Button className="gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 shadow-glow hover:shadow-glow-lg transition-all">
               <Plus className="h-4 w-4" />
               {t[lang].addAnalysis}
             </Button>
@@ -93,15 +100,15 @@ export default function SoilAnalysisPage() {
 
       {loading ? (
         <div className="flex items-center justify-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <Loader2 className="h-8 w-8 animate-spin text-green-500" />
         </div>
       ) : analyses.length === 0 ? (
-        <Card className="p-12 text-center">
+        <Card className="glass-card p-12 text-center border-white/10 shadow-depth">
           <div className="mx-auto max-w-md space-y-4">
-            <h3 className="text-xl font-semibold">{t[lang].noAnalyses}</h3>
-            <p className="text-muted-foreground">{t[lang].noAnalysesDesc}</p>
+            <h3 className="text-2xl font-bold text-white">{t[lang].noAnalyses}</h3>
+            <p className="text-gray-400">{t[lang].noAnalysesDesc}</p>
             <Link href="/dashboard/soil-analysis/new">
-              <Button className="gap-2">
+              <Button className="gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 shadow-glow hover:shadow-glow-lg transition-all">
                 <Plus className="h-4 w-4" />
                 {t[lang].addAnalysis}
               </Button>
@@ -111,54 +118,63 @@ export default function SoilAnalysisPage() {
       ) : (
         <div className="grid gap-6 md:grid-cols-2">
           {analyses.map((analysis) => (
-            <Card key={analysis.id} className="p-6">
+            <Card
+              key={analysis.id}
+              className="glass-card p-6 border-white/10 hover:border-green-500/50 hover:shadow-glow transition-all group"
+            >
               <div className="space-y-4">
                 <div>
-                  <h3 className="text-lg font-semibold">{analysis.fields?.name}</h3>
-                  <p className="text-sm text-muted-foreground">
+                  <h3 className="text-lg font-bold text-white group-hover:text-green-400 transition-colors">
+                    {analysis.fields?.name}
+                  </h3>
+                  <p className="text-sm text-gray-400">
                     {t[lang].farm}: {analysis.fields?.farms?.name}
                   </p>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {t[lang].date}: {new Date(analysis.analysis_date).toLocaleDateString(lang === "ar" ? "ar-EG" : "en-US")}
+                  <p className="text-xs text-gray-500 mt-1">
+                    {t[lang].date}:{" "}
+                    {new Date(analysis.analysis_date).toLocaleDateString(lang === "ar" ? "ar-EG" : "en-US")}
                   </p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">{t[lang].ph}</span>
+                      <span className="text-sm text-gray-400">{t[lang].ph}</span>
                       {getStatusIcon(analysis.ph_level, { min: 6.0, max: 7.5 })}
                     </div>
-                    <p className="text-lg font-semibold">{analysis.ph_level}</p>
+                    <p className="text-lg font-bold text-green-400">{analysis.ph_level}</p>
                   </div>
 
                   <div className="space-y-1">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">{t[lang].nitrogen}</span>
+                      <span className="text-sm text-gray-400">{t[lang].nitrogen}</span>
                       {getStatusIcon(analysis.nitrogen_ppm, { min: 20, max: 50 })}
                     </div>
-                    <p className="text-lg font-semibold">{analysis.nitrogen_ppm} ppm</p>
+                    <p className="text-lg font-bold text-green-400">{analysis.nitrogen_ppm} ppm</p>
                   </div>
 
                   <div className="space-y-1">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">{t[lang].phosphorus}</span>
+                      <span className="text-sm text-gray-400">{t[lang].phosphorus}</span>
                       {getStatusIcon(analysis.phosphorus_ppm, { min: 15, max: 40 })}
                     </div>
-                    <p className="text-lg font-semibold">{analysis.phosphorus_ppm} ppm</p>
+                    <p className="text-lg font-bold text-green-400">{analysis.phosphorus_ppm} ppm</p>
                   </div>
 
                   <div className="space-y-1">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">{t[lang].potassium}</span>
+                      <span className="text-sm text-gray-400">{t[lang].potassium}</span>
                       {getStatusIcon(analysis.potassium_ppm, { min: 100, max: 200 })}
                     </div>
-                    <p className="text-lg font-semibold">{analysis.potassium_ppm} ppm</p>
+                    <p className="text-lg font-bold text-green-400">{analysis.potassium_ppm} ppm</p>
                   </div>
                 </div>
 
                 <Link href={`/dashboard/soil-analysis/${analysis.id}`}>
-                  <Button variant="outline" className="w-full bg-transparent">
+                  <Button
+                    variant="outline"
+                    className="w-full glass-card border-white/10 hover:border-green-500/50 hover:shadow-glow transition-all bg-transparent"
+                  >
                     {t[lang].viewDetails}
                   </Button>
                 </Link>

@@ -65,28 +65,35 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center p-6 bg-gradient-to-br from-background via-background to-primary/5">
-      <div className="w-full max-w-md">
+    <div className="flex min-h-screen w-full items-center justify-center p-6 bg-black relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/10 animate-pulse" />
+
+      <div className="w-full max-w-md relative z-10">
         <div className="flex flex-col gap-6">
-          {/* Logo and Title */}
           <div className="flex flex-col items-center gap-2 text-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary">
-              <Sprout className="h-8 w-8 text-primary-foreground" />
+            <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-primary to-primary/70 shadow-3d shadow-primary/50 hover:scale-105 transition-transform duration-300">
+              <Sprout className="h-10 w-10 text-white" />
             </div>
-            <h1 className="text-3xl font-bold">Adham AgriTech</h1>
-            <p className="text-muted-foreground">منصة الزراعة الذكية</p>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-white via-white to-white/70 bg-clip-text text-transparent">
+              Adham AgriTech
+            </h1>
+            <p className="text-white/60 text-lg">منصة الزراعة الذكية</p>
           </div>
 
-          <Card>
+          <Card className="glass-card border-white/10 shadow-3d">
             <CardHeader>
-              <CardTitle className="text-2xl">إنشاء حساب جديد</CardTitle>
-              <CardDescription>أدخل بياناتك لإنشاء حساب جديد في المنصة</CardDescription>
+              <CardTitle className="text-3xl bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
+                إنشاء حساب جديد
+              </CardTitle>
+              <CardDescription className="text-white/60">أدخل بياناتك لإنشاء حساب جديد في المنصة</CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSignUp}>
                 <div className="flex flex-col gap-4">
                   <div className="grid gap-2">
-                    <Label htmlFor="fullName">الاسم الكامل</Label>
+                    <Label htmlFor="fullName" className="text-white/90">
+                      الاسم الكامل
+                    </Label>
                     <Input
                       id="fullName"
                       type="text"
@@ -94,10 +101,13 @@ export default function SignUpPage() {
                       required
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
+                      className="bg-white/5 border-white/10 focus:border-primary/50 focus:ring-primary/20 transition-all duration-300"
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="email">البريد الإلكتروني</Label>
+                    <Label htmlFor="email" className="text-white/90">
+                      البريد الإلكتروني
+                    </Label>
                     <Input
                       id="email"
                       type="email"
@@ -106,10 +116,13 @@ export default function SignUpPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       dir="ltr"
+                      className="bg-white/5 border-white/10 focus:border-primary/50 focus:ring-primary/20 transition-all duration-300"
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="phone">رقم الهاتف</Label>
+                    <Label htmlFor="phone" className="text-white/90">
+                      رقم الهاتف
+                    </Label>
                     <Input
                       id="phone"
                       type="tel"
@@ -117,15 +130,21 @@ export default function SignUpPage() {
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       dir="ltr"
+                      className="bg-white/5 border-white/10 focus:border-primary/50 focus:ring-primary/20 transition-all duration-300"
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="role">نوع الحساب</Label>
+                    <Label htmlFor="role" className="text-white/90">
+                      نوع الحساب
+                    </Label>
                     <Select value={role} onValueChange={setRole}>
-                      <SelectTrigger id="role">
+                      <SelectTrigger
+                        id="role"
+                        className="bg-white/5 border-white/10 focus:border-primary/50 focus:ring-primary/20"
+                      >
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="glass-card border-white/10">
                         <SelectItem value="farmer">مزارع</SelectItem>
                         <SelectItem value="engineer">مهندس زراعي</SelectItem>
                         <SelectItem value="manager">مدير</SelectItem>
@@ -133,7 +152,9 @@ export default function SignUpPage() {
                     </Select>
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="password">كلمة المرور</Label>
+                    <Label htmlFor="password" className="text-white/90">
+                      كلمة المرور
+                    </Label>
                     <Input
                       id="password"
                       type="password"
@@ -141,10 +162,13 @@ export default function SignUpPage() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       dir="ltr"
+                      className="bg-white/5 border-white/10 focus:border-primary/50 focus:ring-primary/20 transition-all duration-300"
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="confirmPassword">تأكيد كلمة المرور</Label>
+                    <Label htmlFor="confirmPassword" className="text-white/90">
+                      تأكيد كلمة المرور
+                    </Label>
                     <Input
                       id="confirmPassword"
                       type="password"
@@ -152,16 +176,28 @@ export default function SignUpPage() {
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       dir="ltr"
+                      className="bg-white/5 border-white/10 focus:border-primary/50 focus:ring-primary/20 transition-all duration-300"
                     />
                   </div>
-                  {error && <div className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">{error}</div>}
-                  <Button type="submit" className="w-full" disabled={isLoading}>
+                  {error && (
+                    <div className="rounded-lg bg-destructive/20 border border-destructive/30 p-3 text-sm text-destructive backdrop-blur-sm">
+                      {error}
+                    </div>
+                  )}
+                  <Button
+                    type="submit"
+                    className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-glow hover:shadow-primary/50 transition-all duration-300 hover:scale-[1.02]"
+                    disabled={isLoading}
+                  >
                     {isLoading ? "جاري إنشاء الحساب..." : "إنشاء حساب"}
                   </Button>
                 </div>
-                <div className="mt-4 text-center text-sm">
+                <div className="mt-4 text-center text-sm text-white/70">
                   لديك حساب بالفعل؟{" "}
-                  <Link href="/auth/login" className="underline underline-offset-4 text-primary hover:text-primary/80">
+                  <Link
+                    href="/auth/login"
+                    className="text-primary hover:text-primary/80 underline underline-offset-4 transition-colors"
+                  >
                     تسجيل الدخول
                   </Link>
                 </div>

@@ -4,42 +4,52 @@ export async function GET(request: Request) {
     const location = searchParams.get("location") || "Cairo,EG"
     const lang = searchParams.get("lang") || "en"
 
-    // Mock weather data for demonstration
-    // In production, you would use OpenWeather API with process.env.OPENWEATHER_API_KEY
-    const mockWeatherData = {
-      current: {
-        temp: 28 + Math.random() * 10,
-        feels_like: 30 + Math.random() * 8,
-        humidity: 45 + Math.random() * 30,
-        wind_speed: 3 + Math.random() * 7,
-        visibility: 8000 + Math.random() * 2000,
-        pressure: 1010 + Math.random() * 20,
-        condition: ["Clear", "Partly Cloudy", "Cloudy", "Light Rain"][Math.floor(Math.random() * 4)],
-      },
-      forecast: Array.from({ length: 7 }, (_, i) => ({
-        date: new Date(Date.now() + i * 24 * 60 * 60 * 1000).toISOString(),
-        temp_max: 30 + Math.random() * 8,
-        temp_min: 18 + Math.random() * 8,
-        condition: ["Clear", "Partly Cloudy", "Cloudy", "Light Rain"][Math.floor(Math.random() * 4)],
-      })),
-    }
-
-    // Uncomment this to use real OpenWeather API:
-    /*
     const apiKey = process.env.OPENWEATHER_API_KEY
     if (!apiKey) {
+      console.error("[v0] OpenWeather API key not configured")
       return Response.json({ error: "API key not configured" }, { status: 500 })
     }
 
+    // Fetch current weather
     const currentResponse = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric&lang=${lang}`
+      `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric&lang=${lang}`,
     )
+
+    if (!currentResponse.ok) {
+      console.error("[v0] OpenWeather API error:", await currentResponse.text())
+      return Response.json({ error: "Failed to fetch weather data" }, { status: currentResponse.status })
+    }
+
     const currentData = await currentResponse.json()
 
+    // Fetch 7-day forecast
     const forecastResponse = await fetch(
-      `https://api.openweathermap.org/data/2.5/forecast/daily?q=${location}&appid=${apiKey}&units=metric&cnt=7&lang=${lang}`
+      `https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${apiKey}&units=metric&cnt=56&lang=${lang}`,
     )
+
+    if (!forecastResponse.ok) {
+      console.error("[v0] OpenWeather forecast API error:", await forecastResponse.text())
+      return Response.json({ error: "Failed to fetch forecast data" }, { status: forecastResponse.status })
+    }
+
     const forecastData = await forecastResponse.json()
+
+    // Process forecast data to get daily forecasts
+    const dailyForecasts = []
+    const processedDates = new Set()
+
+    for (const item of forecastData.list) {
+      const date = new Date(item.dt * 1000).toISOString().split("T")[0]
+      if (!processedDates.has(date) && dailyForecasts.length < 7) {
+        processedDates.add(date)
+        dailyForecasts.push({
+          date: new Date(item.dt * 1000).toISOString(),
+          temp_max: item.main.temp_max,
+          temp_min: item.main.temp_min,
+          condition: item.weather[0].description,
+        })
+      }
+    }
 
     return Response.json({
       current: {
@@ -51,16 +61,8 @@ export async function GET(request: Request) {
         pressure: currentData.main.pressure,
         condition: currentData.weather[0].description,
       },
-      forecast: forecastData.list.map((day: any) => ({
-        date: new Date(day.dt * 1000).toISOString(),
-        temp_max: day.temp.max,
-        temp_min: day.temp.min,
-        condition: day.weather[0].description,
-      })),
+      forecast: dailyForecasts,
     })
-    */
-
-    return Response.json(mockWeatherData)
   } catch (error) {
     console.error("[v0] Error fetching weather:", error)
     return Response.json({ error: "Failed to fetch weather data" }, { status: 500 })

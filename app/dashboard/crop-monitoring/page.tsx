@@ -97,13 +97,20 @@ export default function CropMonitoringPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">{t[lang].title}</h1>
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
+          {t[lang].title}
+        </h1>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={() => setLang(lang === "ar" ? "en" : "ar")}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setLang(lang === "ar" ? "en" : "ar")}
+            className="glass-card border-white/10 hover:border-green-500/50 hover:shadow-glow transition-all"
+          >
             {lang === "ar" ? "EN" : "ع"}
           </Button>
           <Link href="/dashboard/crop-monitoring/new">
-            <Button className="gap-2">
+            <Button className="gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 shadow-glow hover:shadow-glow-lg transition-all">
               <Plus className="h-4 w-4" />
               {t[lang].addMonitoring}
             </Button>
@@ -113,15 +120,15 @@ export default function CropMonitoringPage() {
 
       {loading ? (
         <div className="flex items-center justify-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <Loader2 className="h-8 w-8 animate-spin text-green-500" />
         </div>
       ) : monitoring.length === 0 ? (
-        <Card className="p-12 text-center">
+        <Card className="glass-card p-12 text-center border-white/10 shadow-depth">
           <div className="mx-auto max-w-md space-y-4">
-            <h3 className="text-xl font-semibold">{t[lang].noMonitoring}</h3>
-            <p className="text-muted-foreground">{t[lang].noMonitoringDesc}</p>
+            <h3 className="text-2xl font-bold text-white">{t[lang].noMonitoring}</h3>
+            <p className="text-gray-400">{t[lang].noMonitoringDesc}</p>
             <Link href="/dashboard/crop-monitoring/new">
-              <Button className="gap-2">
+              <Button className="gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 shadow-glow hover:shadow-glow-lg transition-all">
                 <Plus className="h-4 w-4" />
                 {t[lang].addMonitoring}
               </Button>
@@ -131,46 +138,55 @@ export default function CropMonitoringPage() {
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {monitoring.map((item) => (
-            <Card key={item.id} className="p-6 hover:border-primary transition-colors">
+            <Card
+              key={item.id}
+              className="glass-card p-6 border-white/10 hover:border-green-500/50 hover:shadow-glow transition-all group"
+            >
               <div className="space-y-4">
                 <div>
-                  <h3 className="text-lg font-semibold mb-1">{item.fields?.name}</h3>
-                  <p className="text-sm text-muted-foreground">
+                  <h3 className="text-lg font-bold text-white mb-1 group-hover:text-green-400 transition-colors">
+                    {item.fields?.name}
+                  </h3>
+                  <p className="text-sm text-gray-400">
                     {t[lang].farm}: {item.fields?.farms?.name}
                   </p>
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="text-xs text-gray-500 mt-1">
                     {t[lang].date}:{" "}
                     {new Date(item.monitoring_date).toLocaleDateString(lang === "ar" ? "ar-EG" : "en-US")}
                   </p>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-muted-foreground">{t[lang].health}:</span>
-                  <Badge className={getHealthColor(item.health_status)}>
+                  <span className="text-sm text-gray-400">{t[lang].health}:</span>
+                  <Badge className={`${getHealthColor(item.health_status)} border-0 shadow-glow`}>
                     {t[lang][item.health_status as keyof typeof t.ar] || item.health_status}
                   </Badge>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 pt-2 border-t">
+                <div className="grid grid-cols-2 gap-4 pt-2 border-t border-white/10">
                   <div className="space-y-1">
-                    <p className="text-xs text-muted-foreground">{t[lang].ndvi}</p>
+                    <p className="text-xs text-gray-400">{t[lang].ndvi}</p>
                     <div className="flex items-center gap-1">
-                      <TrendingUp className="h-3 w-3 text-green-500" />
-                      <p className="text-lg font-bold">{item.ndvi_value?.toFixed(2) || "N/A"}</p>
+                      <TrendingUp className="h-3 w-3 text-green-400" />
+                      <p className="text-lg font-bold text-green-400">{item.ndvi_value?.toFixed(2) || "N/A"}</p>
                     </div>
                   </div>
 
                   <div className="space-y-1">
-                    <p className="text-xs text-muted-foreground">{t[lang].evi}</p>
+                    <p className="text-xs text-gray-400">{t[lang].evi}</p>
                     <div className="flex items-center gap-1">
-                      <TrendingUp className="h-3 w-3 text-green-500" />
-                      <p className="text-lg font-bold">{item.evi_value?.toFixed(2) || "N/A"}</p>
+                      <TrendingUp className="h-3 w-3 text-green-400" />
+                      <p className="text-lg font-bold text-green-400">{item.evi_value?.toFixed(2) || "N/A"}</p>
                     </div>
                   </div>
                 </div>
 
                 <Link href={`/dashboard/crop-monitoring/${item.id}`}>
-                  <Button variant="outline" size="sm" className="w-full bg-transparent">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full glass-card border-white/10 hover:border-green-500/50 hover:shadow-glow transition-all bg-transparent"
+                  >
                     {t[lang].viewDetails}
                   </Button>
                 </Link>

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Loader2, Send, Sparkles, User, Bot } from "lucide-react"
-import { useChat } from "ai/react"
+import { useChat } from "ai"
 
 export default function AIAssistantPage() {
   const [lang, setLang] = useState<"ar" | "en">("ar")

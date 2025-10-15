@@ -40,28 +40,39 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center p-6 bg-gradient-to-br from-background via-background to-primary/5">
-      <div className="w-full max-w-md">
+    <div className="flex min-h-screen w-full items-center justify-center p-6 bg-black relative overflow-hidden">
+      {/* Animated background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/10 animate-pulse" />
+
+      <div className="w-full max-w-md relative z-10">
         <div className="flex flex-col gap-6">
           {/* Logo and Title */}
           <div className="flex flex-col items-center gap-2 text-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary">
-              <Sprout className="h-8 w-8 text-primary-foreground" />
+            <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-primary to-primary/70 shadow-3d shadow-primary/50 hover:scale-105 transition-transform duration-300">
+              <Sprout className="h-10 w-10 text-white" />
             </div>
-            <h1 className="text-3xl font-bold">Adham AgriTech</h1>
-            <p className="text-muted-foreground">منصة الزراعة الذكية</p>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-white via-white to-white/70 bg-clip-text text-transparent">
+              Adham AgriTech
+            </h1>
+            <p className="text-white/60 text-lg">منصة الزراعة الذكية</p>
           </div>
 
-          <Card>
+          <Card className="glass-card border-white/10 shadow-3d">
             <CardHeader>
-              <CardTitle className="text-2xl">تسجيل الدخول</CardTitle>
-              <CardDescription>أدخل بريدك الإلكتروني وكلمة المرور للوصول إلى حسابك</CardDescription>
+              <CardTitle className="text-3xl bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
+                تسجيل الدخول
+              </CardTitle>
+              <CardDescription className="text-white/60">
+                أدخل بريدك الإلكتروني وكلمة المرور للوصول إلى حسابك
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleLogin}>
                 <div className="flex flex-col gap-6">
                   <div className="grid gap-2">
-                    <Label htmlFor="email">البريد الإلكتروني</Label>
+                    <Label htmlFor="email" className="text-white/90">
+                      البريد الإلكتروني
+                    </Label>
                     <Input
                       id="email"
                       type="email"
@@ -70,10 +81,13 @@ export default function LoginPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       dir="ltr"
+                      className="bg-white/5 border-white/10 focus:border-primary/50 focus:ring-primary/20 transition-all duration-300"
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="password">كلمة المرور</Label>
+                    <Label htmlFor="password" className="text-white/90">
+                      كلمة المرور
+                    </Label>
                     <Input
                       id="password"
                       type="password"
@@ -81,16 +95,28 @@ export default function LoginPage() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       dir="ltr"
+                      className="bg-white/5 border-white/10 focus:border-primary/50 focus:ring-primary/20 transition-all duration-300"
                     />
                   </div>
-                  {error && <div className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">{error}</div>}
-                  <Button type="submit" className="w-full" disabled={isLoading}>
+                  {error && (
+                    <div className="rounded-lg bg-destructive/20 border border-destructive/30 p-3 text-sm text-destructive backdrop-blur-sm">
+                      {error}
+                    </div>
+                  )}
+                  <Button
+                    type="submit"
+                    className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-glow hover:shadow-primary/50 transition-all duration-300 hover:scale-[1.02]"
+                    disabled={isLoading}
+                  >
                     {isLoading ? "جاري تسجيل الدخول..." : "تسجيل الدخول"}
                   </Button>
                 </div>
-                <div className="mt-4 text-center text-sm">
+                <div className="mt-4 text-center text-sm text-white/70">
                   ليس لديك حساب؟{" "}
-                  <Link href="/auth/signup" className="underline underline-offset-4 text-primary hover:text-primary/80">
+                  <Link
+                    href="/auth/signup"
+                    className="text-primary hover:text-primary/80 underline underline-offset-4 transition-colors"
+                  >
                     إنشاء حساب جديد
                   </Link>
                 </div>

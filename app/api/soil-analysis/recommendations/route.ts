@@ -51,7 +51,7 @@ Provide detailed recommendations on:
 Make the recommendations practical and specific for Egyptian farmers.`
 
     const { text } = await generateText({
-      model: "openai/gpt-4o-mini",
+      model: "groq/llama-3.3-70b-versatile",
       prompt,
       temperature: 0.7,
       maxTokens: 1000,

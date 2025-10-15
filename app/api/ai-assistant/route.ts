@@ -25,8 +25,8 @@ export async function POST(request: Request) {
 
 Provide clear and helpful answers in English.`
 
-    const result = streamText({
-      model: "openai/gpt-4o-mini",
+    const result = await streamText({
+      model: "groq/llama-3.3-70b-versatile",
       system: systemPrompt,
       messages,
       temperature: 0.7,
