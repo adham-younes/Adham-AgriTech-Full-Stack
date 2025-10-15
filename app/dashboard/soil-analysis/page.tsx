@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { createBrowserClient } from "@supabase/ssr"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -17,11 +17,7 @@ export default function SoilAnalysisPage() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   )
 
-  useEffect(() => {
-    fetchAnalyses()
-  }, [])
-
-  async function fetchAnalyses() {
+  const fetchAnalyses = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from("soil_analysis")
@@ -35,7 +31,11 @@ export default function SoilAnalysisPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [supabase])
+
+  useEffect(() => {
+    fetchAnalyses()
+  }, [fetchAnalyses])
 
   const getStatusIcon = (value: number, optimal: { min: number; max: number }) => {
     if (value < optimal.min) return <TrendingDown className="h-4 w-4 text-orange-500" />

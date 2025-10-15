@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { createBrowserClient } from "@supabase/ssr"
 import { Button } from "@/components/ui/button"
@@ -21,11 +21,7 @@ export default function FarmDetailsPage() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   )
 
-  useEffect(() => {
-    fetchFarmDetails()
-  }, [params.id])
-
-  async function fetchFarmDetails() {
+  const fetchFarmDetails = useCallback(async () => {
     try {
       const { data: farmData, error: farmError } = await supabase.from("farms").select("*").eq("id", params.id).single()
 
@@ -44,7 +40,11 @@ export default function FarmDetailsPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [supabase, params.id])
+
+  useEffect(() => {
+    fetchFarmDetails()
+  }, [fetchFarmDetails])
 
   const t = {
     ar: {

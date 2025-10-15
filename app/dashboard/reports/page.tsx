@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { createBrowserClient } from "@supabase/ssr"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -18,11 +18,7 @@ export default function ReportsPage() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   )
 
-  useEffect(() => {
-    fetchReports()
-  }, [])
-
-  async function fetchReports() {
+  const fetchReports = useCallback(async () => {
     try {
       const { data, error } = await supabase.from("reports").select("*").order("created_at", { ascending: false })
 
@@ -33,7 +29,11 @@ export default function ReportsPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [supabase])
+
+  useEffect(() => {
+    fetchReports()
+  }, [fetchReports])
 
   const getTypeColor = (type: string) => {
     switch (type) {

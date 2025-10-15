@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { createBrowserClient } from "@supabase/ssr"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -47,9 +47,9 @@ export default function AIAssistantPage() {
 
   useEffect(() => {
     loadChatHistory()
-  }, [])
+  }, [loadChatHistory])
 
-  async function loadChatHistory() {
+  const loadChatHistory = useCallback(async () => {
     try {
       const {
         data: { user },
@@ -68,7 +68,7 @@ export default function AIAssistantPage() {
     } catch (error) {
       console.error("[v0] Error loading chat history:", error)
     }
-  }
+  }, [supabase])
 
   const t = {
     ar: {

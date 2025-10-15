@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { createBrowserClient } from "@supabase/ssr"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -20,11 +20,7 @@ export default function ForumPage() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   )
 
-  useEffect(() => {
-    loadPosts()
-  }, [])
-
-  async function loadPosts() {
+  const loadPosts = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from("forum_posts")
@@ -38,7 +34,11 @@ export default function ForumPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [supabase])
+
+  useEffect(() => {
+    loadPosts()
+  }, [loadPosts])
 
   const t = {
     ar: {

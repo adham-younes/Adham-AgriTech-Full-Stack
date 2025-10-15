@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { createBrowserClient } from "@supabase/ssr"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -17,11 +17,7 @@ export default function FieldsPage() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   )
 
-  useEffect(() => {
-    fetchFields()
-  }, [])
-
-  async function fetchFields() {
+  const fetchFields = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from("fields")
@@ -35,7 +31,11 @@ export default function FieldsPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [supabase])
+
+  useEffect(() => {
+    fetchFields()
+  }, [fetchFields])
 
   const t = {
     ar: {
