@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { createBrowserClient } from "@supabase/ssr"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { ShoppingCart, Search, Plus, Package } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 
 export default function MarketplacePage() {
   const [lang, setLang] = useState<"ar" | "en">("ar")
@@ -20,11 +21,7 @@ export default function MarketplacePage() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   )
 
-  useEffect(() => {
-    loadProducts()
-  }, [])
-
-  async function loadProducts() {
+  const loadProducts = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from("marketplace_products")
@@ -39,7 +36,11 @@ export default function MarketplacePage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [supabase])
+
+  useEffect(() => {
+    loadProducts()
+  }, [loadProducts])
 
   const t = {
     ar: {
@@ -138,10 +139,12 @@ export default function MarketplacePage() {
             <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow">
               <div className="aspect-video bg-muted flex items-center justify-center">
                 {product.image_url ? (
-                  <img
+                  <Image
                     src={product.image_url || "/placeholder.svg"}
                     alt={product.name}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
+                    unoptimized
                   />
                 ) : (
                   <Package className="h-12 w-12 text-muted-foreground" />

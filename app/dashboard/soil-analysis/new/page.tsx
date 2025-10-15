@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { createBrowserClient } from "@supabase/ssr"
 import { Button } from "@/components/ui/button"
@@ -37,11 +37,7 @@ export default function NewSoilAnalysisPage() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   )
 
-  useEffect(() => {
-    fetchFields()
-  }, [])
-
-  async function fetchFields() {
+  const fetchFields = useCallback(async () => {
     try {
       const { data, error } = await supabase.from("fields").select("id, name, farms(name)").order("name")
 
@@ -50,7 +46,11 @@ export default function NewSoilAnalysisPage() {
     } catch (error) {
       console.error("[v0] Error fetching fields:", error)
     }
-  }
+  }, [supabase])
+
+  useEffect(() => {
+    fetchFields()
+  }, [fetchFields])
 
   async function generateAIRecommendations() {
     setGeneratingAI(true)

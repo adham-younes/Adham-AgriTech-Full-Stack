@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useParams } from "next/navigation"
 import { createBrowserClient } from "@supabase/ssr"
 import { Button } from "@/components/ui/button"
@@ -22,11 +22,7 @@ export default function CropMonitoringDetailsPage() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   )
 
-  useEffect(() => {
-    fetchMonitoringDetails()
-  }, [params.id])
-
-  async function fetchMonitoringDetails() {
+  const fetchMonitoringDetails = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from("crop_monitoring")
@@ -41,7 +37,11 @@ export default function CropMonitoringDetailsPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [supabase, params.id])
+
+  useEffect(() => {
+    fetchMonitoringDetails()
+  }, [fetchMonitoringDetails])
 
   const getHealthColor = (health: string) => {
     switch (health) {

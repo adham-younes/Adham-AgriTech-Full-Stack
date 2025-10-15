@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { createBrowserClient } from "@supabase/ssr"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -17,11 +17,7 @@ export default function NotificationsPage() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   )
 
-  useEffect(() => {
-    loadNotifications()
-  }, [])
-
-  async function loadNotifications() {
+  const loadNotifications = useCallback(async () => {
     try {
       const {
         data: { user },
@@ -41,7 +37,11 @@ export default function NotificationsPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [supabase])
+
+  useEffect(() => {
+    loadNotifications()
+  }, [loadNotifications])
 
   async function markAsRead(id: string) {
     try {

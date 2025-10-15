@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { createBrowserClient } from "@supabase/ssr"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -18,11 +18,7 @@ export default function IrrigationPage() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   )
 
-  useEffect(() => {
-    fetchSystems()
-  }, [])
-
-  async function fetchSystems() {
+  const fetchSystems = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from("irrigation_systems")
@@ -36,7 +32,11 @@ export default function IrrigationPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [supabase])
+
+  useEffect(() => {
+    fetchSystems()
+  }, [fetchSystems])
 
   const getStatusColor = (status: string) => {
     switch (status) {

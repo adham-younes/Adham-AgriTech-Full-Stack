@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { createBrowserClient } from "@supabase/ssr"
 import { Button } from "@/components/ui/button"
@@ -36,11 +36,7 @@ export default function NewFieldPage() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   )
 
-  useEffect(() => {
-    fetchFarms()
-  }, [])
-
-  async function fetchFarms() {
+  const fetchFarms = useCallback(async () => {
     try {
       const { data, error } = await supabase.from("farms").select("id, name").order("name")
 
@@ -49,7 +45,11 @@ export default function NewFieldPage() {
     } catch (error) {
       console.error("[v0] Error fetching farms:", error)
     }
-  }
+  }, [supabase])
+
+  useEffect(() => {
+    fetchFarms()
+  }, [fetchFarms])
 
   const t = {
     ar: {

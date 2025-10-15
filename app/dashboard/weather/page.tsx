@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Loader2, Cloud, Droplets, Wind, Eye, Gauge, Sun, CloudRain, CloudSnow, CloudDrizzle } from "lucide-react"
@@ -12,11 +12,7 @@ export default function WeatherPage() {
   const [lang, setLang] = useState<"ar" | "en">("ar")
   const [location, setLocation] = useState("Cairo,EG")
 
-  useEffect(() => {
-    fetchWeather()
-  }, [location])
-
-  async function fetchWeather() {
+  const fetchWeather = useCallback(async () => {
     setLoading(true)
     try {
       const response = await fetch(`/api/weather?location=${location}&lang=${lang}`)
@@ -33,7 +29,11 @@ export default function WeatherPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [location, lang])
+
+  useEffect(() => {
+    fetchWeather()
+  }, [fetchWeather])
 
   const getWeatherIcon = (condition: string) => {
     const lower = condition.toLowerCase()
