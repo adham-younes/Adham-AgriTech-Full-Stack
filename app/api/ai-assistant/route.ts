@@ -1,8 +1,31 @@
 import { streamText } from "ai"
+import { z } from "zod"
 
 export async function POST(request: Request) {
   try {
-    const { messages, language } = await request.json()
+    const json = await request.json().catch(() => null)
+    if (!json) {
+      return Response.json({ error: "Invalid JSON body" }, { status: 400 })
+    }
+
+    const schema = z.object({
+      language: z.enum(["ar", "en"]).optional().default("ar"),
+      messages: z
+        .array(
+          z.object({
+            role: z.enum(["system", "user", "assistant"]),
+            content: z.string().min(1),
+          }),
+        )
+        .min(1),
+    })
+
+    const parsed = schema.safeParse(json)
+    if (!parsed.success) {
+      return Response.json({ error: "Validation failed", details: parsed.error.flatten() }, { status: 400 })
+    }
+
+    const { messages, language } = parsed.data
 
     const systemPrompt =
       language === "ar"
@@ -30,7 +53,7 @@ Provide clear and helpful answers in English.`
       system: systemPrompt,
       messages,
       temperature: 0.7,
-      maxTokens: 1000,
+      maxTokens: 800,
     })
 
     return result.toDataStreamResponse()
