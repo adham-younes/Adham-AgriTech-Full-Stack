@@ -83,13 +83,13 @@ export default function NewFarmPage() {
       if (!user) throw new Error("Not authenticated")
 
       const { error } = await supabase.from("farms").insert({
-        user_id: user.id,
+        owner_id: user.id,
         name: formData.name,
-        description: formData.description,
         location: formData.location,
-        total_area: Number.parseFloat(formData.total_area),
+        area: Number.parseFloat(formData.total_area),
         latitude: Number.parseFloat(formData.latitude),
         longitude: Number.parseFloat(formData.longitude),
+        description: formData.description || null,
       })
 
       if (error) throw error

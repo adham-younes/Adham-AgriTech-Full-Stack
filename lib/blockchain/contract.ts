@@ -39,10 +39,12 @@ export class BlockchainService {
     }
 
     try {
-      const accounts = await (window as any).ethereum.request({
-        method: "eth_requestAccounts",
-      })
-      return accounts[0]
+      const { BrowserProvider } = await import("ethers")
+      const provider = new BrowserProvider((window as any).ethereum)
+      this.provider = provider
+      const signer = await provider.getSigner()
+      const address = await signer.getAddress()
+      return address
     } catch (error) {
       console.error("Failed to connect wallet:", error)
       return null

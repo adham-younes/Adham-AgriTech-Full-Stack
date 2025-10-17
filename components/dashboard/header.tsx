@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Bell, LogOut, User, Settings } from "lucide-react"
+import { LanguageToggle } from "@/components/language-toggle"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
 
@@ -60,6 +61,7 @@ export function DashboardHeader({ user, profile }: HeaderProps) {
           </span>
         </Button>
 
+        <LanguageToggle />
         {/* User Menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
+import { createBrowserClient } from "@supabase/ssr"
 import { Card } from "@/components/ui/card"
 import { Loader2, Cloud, Droplets, Wind, Eye, Gauge, Sun, CloudRain, CloudSnow, CloudDrizzle } from "lucide-react"
 
@@ -11,6 +12,10 @@ export default function WeatherPage() {
   const [loading, setLoading] = useState(true)
   const [lang, setLang] = useState<"ar" | "en">("ar")
   const [location, setLocation] = useState("Cairo,EG")
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  )
 
   useEffect(() => {
     fetchWeather()
@@ -32,6 +37,31 @@ export default function WeatherPage() {
       console.error("[v0] Error fetching weather:", error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  async function persistToFarm() {
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (!user) return alert(lang === "ar" ? "سجّل الدخول أولاً" : "Please sign in first")
+
+      // Select first farm for demo persist
+      const { data: farms } = await supabase.from("farms").select("id").limit(1)
+      const farmId = farms?.[0]?.id
+      if (!farmId) return alert(lang === "ar" ? "لا توجد مزارع" : "No farms found")
+
+      const res = await fetch("/api/weather/persist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ farm_id: farmId, location, lang }),
+      })
+      const j = await res.json()
+      if (!res.ok) throw new Error(j.error || "Persist failed")
+      alert(lang === "ar" ? "تم حفظ بيانات الطقس" : "Weather saved")
+    } catch (e: any) {
+      alert(e.message || (lang === "ar" ? "تعذّر الحفظ" : "Failed to save"))
     }
   }
 
@@ -111,6 +141,9 @@ export default function WeatherPage() {
           </select>
           <Button variant="outline" size="sm" onClick={() => setLang(lang === "ar" ? "en" : "ar")}>
             {lang === "ar" ? "EN" : "ع"}
+          </Button>
+          <Button size="sm" onClick={persistToFarm}>
+            {lang === "ar" ? "حفظ للمزرعة" : "Save to farm"}
           </Button>
         </div>
       </div>
