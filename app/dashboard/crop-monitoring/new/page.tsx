@@ -62,14 +62,12 @@ export default function NewCropMonitoringPage() {
       if (!user) throw new Error("Not authenticated")
 
       const { error } = await supabase.from("crop_monitoring").insert({
-        user_id: user.id,
         field_id: formData.field_id,
         monitoring_date: formData.monitoring_date,
         health_status: formData.health_status,
         ndvi_value: formData.ndvi_value ? Number.parseFloat(formData.ndvi_value) : null,
         evi_value: formData.evi_value ? Number.parseFloat(formData.evi_value) : null,
         ndwi_value: formData.ndwi_value ? Number.parseFloat(formData.ndwi_value) : null,
-        temperature_celsius: formData.temperature_celsius ? Number.parseFloat(formData.temperature_celsius) : null,
         notes: formData.notes || null,
         satellite_image_url: formData.satellite_image_url || null,
       })

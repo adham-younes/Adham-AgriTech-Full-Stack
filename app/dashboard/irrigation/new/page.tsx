@@ -59,13 +59,11 @@ export default function NewIrrigationSystemPage() {
       if (!user) throw new Error("Not authenticated")
 
       const { error } = await supabase.from("irrigation_systems").insert({
-        user_id: user.id,
         field_id: formData.field_id,
-        irrigation_type: formData.irrigation_type,
-        status: formData.status,
-        flow_rate_lpm: formData.flow_rate_lpm ? Number.parseFloat(formData.flow_rate_lpm) : null,
-        schedule: formData.schedule || null,
-        notes: formData.notes || null,
+        system_name: `${formData.irrigation_type || "system"}-${Date.now()}`,
+        system_type: formData.irrigation_type as any,
+        status: formData.status as any,
+        flow_rate: formData.flow_rate_lpm ? Number.parseFloat(formData.flow_rate_lpm) : null,
       })
 
       if (error) throw error

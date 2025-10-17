@@ -114,13 +114,12 @@ export default function NewFieldPage() {
       }
 
       const { error } = await supabase.from("fields").insert({
-        user_id: user.id,
         farm_id: formData.farm_id,
         name: formData.name,
         area: Number.parseFloat(formData.area),
         crop_type: formData.crop_type || null,
         soil_type: formData.soil_type || null,
-        boundary_coordinates: boundaryCoords,
+        boundaries: boundaryCoords,
       })
 
       if (error) throw error

@@ -90,18 +90,15 @@ export default function NewSoilAnalysisPage() {
       if (!user) throw new Error("Not authenticated")
 
       const { error } = await supabase.from("soil_analysis").insert({
-        user_id: user.id,
         field_id: formData.field_id,
         analysis_date: formData.analysis_date,
         ph_level: Number.parseFloat(formData.ph_level),
-        nitrogen_ppm: Number.parseFloat(formData.nitrogen_ppm),
-        phosphorus_ppm: Number.parseFloat(formData.phosphorus_ppm),
-        potassium_ppm: Number.parseFloat(formData.potassium_ppm),
-        organic_matter_percent: formData.organic_matter_percent
-          ? Number.parseFloat(formData.organic_matter_percent)
-          : null,
-        moisture_percent: formData.moisture_percent ? Number.parseFloat(formData.moisture_percent) : null,
-        ec_ds_m: formData.ec_ds_m ? Number.parseFloat(formData.ec_ds_m) : null,
+        nitrogen: Number.parseFloat(formData.nitrogen_ppm),
+        phosphorus: Number.parseFloat(formData.phosphorus_ppm),
+        potassium: Number.parseFloat(formData.potassium_ppm),
+        organic_matter: formData.organic_matter_percent ? Number.parseFloat(formData.organic_matter_percent) : null,
+        moisture: formData.moisture_percent ? Number.parseFloat(formData.moisture_percent) : null,
+        electrical_conductivity: formData.ec_ds_m ? Number.parseFloat(formData.ec_ds_m) : null,
         ai_recommendations: aiRecommendations || null,
       })
 

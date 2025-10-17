@@ -38,19 +38,20 @@ export class SatelliteService {
     endDate: string,
   ): Promise<SatelliteImage[]> {
     try {
-      // In production, this would call Google Earth Engine API
-      console.log("[v0] Fetching satellite images:", { bounds, startDate, endDate })
-
-      // Simulate satellite images
-      return [
-        {
-          id: `SAT-${Date.now()}`,
-          date: new Date().toISOString(),
-          cloudCover: 15,
-          url: `/placeholder.svg?height=400&width=600&query=satellite image NDVI vegetation index`,
-          bounds,
-        },
-      ]
+      // Example: query OpenAerialMap (public STAC-like API)
+      const bbox = `${bounds.west},${bounds.south},${bounds.east},${bounds.north}`
+      const url = `https://api.openaerialmap.org/meta?bbox=${bbox}&start=${startDate}&end=${endDate}`
+      const resp = await fetch(url)
+      if (!resp.ok) throw new Error(`OAM error: ${resp.status}`)
+      const data = await resp.json()
+      const items: SatelliteImage[] = (data.results || []).slice(0, 10).map((r: any) => ({
+        id: r.uuid || r.identifier || `SAT-${Math.random().toString(36).slice(2)}`,
+        date: r.acquisition_start || r.acquisition_end || new Date().toISOString(),
+        cloudCover: Number(r.cloud_cover) || 0,
+        url: r.thumbnail || r.properties?.thumbnail || "/placeholder.jpg",
+        bounds,
+      }))
+      return items
     } catch (error) {
       console.error("Failed to fetch satellite images:", error)
       return []
