@@ -27,31 +27,115 @@ export interface Transaction {
 export class BlockchainService {
   private contractAddress: string
   private provider: any
+  private isConnected: boolean = false
 
   constructor() {
     this.contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || ""
   }
 
-  async connectWallet(): Promise<string | null> {
-    if (typeof window === "undefined" || !(window as any).ethereum) {
-      console.error("MetaMask not installed")
-      return null
+  private async getProvider() {
+    if (typeof window === "undefined") {
+      throw new Error("Window object not available")
     }
 
+    if (!(window as any).ethereum) {
+      throw new Error("MetaMask not installed")
+    }
+
+    return (window as any).ethereum
+  }
+
+  async connectWallet(): Promise<string | null> {
     try {
-      const accounts = await (window as any).ethereum.request({
+      const provider = await this.getProvider()
+      
+      const accounts = await provider.request({
         method: "eth_requestAccounts",
       })
-      return accounts[0]
+      
+      if (accounts.length > 0) {
+        this.isConnected = true
+        return accounts[0]
+      }
+      
+      return null
     } catch (error) {
       console.error("Failed to connect wallet:", error)
+      this.isConnected = false
       return null
+    }
+  }
+
+  async getWalletAddress(): Promise<string | null> {
+    try {
+      const provider = await this.getProvider()
+      
+      const accounts = await provider.request({
+        method: "eth_accounts",
+      })
+      
+      return accounts.length > 0 ? accounts[0] : null
+    } catch (error) {
+      console.error("Failed to get wallet address:", error)
+      return null
+    }
+  }
+
+  async switchToSepoliaNetwork(): Promise<boolean> {
+    try {
+      const provider = await this.getProvider()
+      
+      await provider.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0xaa36a7' }], // Sepolia testnet
+      })
+      
+      return true
+    } catch (error: any) {
+      if (error.code === 4902) {
+        // Chain not added, add it
+        try {
+          await provider.request({
+            method: 'wallet_addEthereumChain',
+            params: [{
+              chainId: '0xaa36a7',
+              chainName: 'Sepolia Test Network',
+              rpcUrls: ['https://sepolia.infura.io/v3/'],
+              nativeCurrency: {
+                name: 'SepoliaETH',
+                symbol: 'SepoliaETH',
+                decimals: 18
+              },
+              blockExplorerUrls: ['https://sepolia.etherscan.io']
+            }]
+          })
+          return true
+        } catch (addError) {
+          console.error("Failed to add Sepolia network:", addError)
+          return false
+        }
+      }
+      
+      console.error("Failed to switch to Sepolia network:", error)
+      return false
     }
   }
 
   async mintLandNFT(farmId: string, area: number, location: { lat: number; lng: number }): Promise<string | null> {
     try {
-      // Simulate minting NFT
+      if (!this.isConnected) {
+        throw new Error("Wallet not connected")
+      }
+
+      const provider = await this.getProvider()
+      const accounts = await provider.request({ method: "eth_accounts" })
+      
+      if (accounts.length === 0) {
+        throw new Error("No accounts found")
+      }
+
+      // In production, this would call the actual smart contract
+      // For now, we'll simulate the transaction
       const tokenId = `LAND-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
 
       console.log("[v0] Minting Land NFT:", {
@@ -59,9 +143,17 @@ export class BlockchainService {
         farmId,
         area,
         location,
+        from: accounts[0]
       })
 
-      // In production, this would interact with actual smart contract
+      // Simulate transaction hash
+      const txHash = `0x${Math.random().toString(16).substr(2, 64)}`
+      
+      // In production, you would:
+      // 1. Call the smart contract's mint function
+      // 2. Wait for transaction confirmation
+      // 3. Return the actual token ID from the contract
+
       return tokenId
     } catch (error) {
       console.error("Failed to mint NFT:", error)
