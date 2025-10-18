@@ -1,8 +1,26 @@
 import { streamText } from "ai"
+import { aiAssistantSchema, validateData } from "@/lib/validation/schemas"
+import { aiLimiter, checkRateLimit } from "@/lib/security/rate-limiter"
 
 export async function POST(request: Request) {
   try {
-    const { messages, language } = await request.json()
+    // Rate limiting
+    const identifier = request.headers.get("x-forwarded-for") || "anonymous"
+    const rateLimitResponse = await checkRateLimit(identifier, aiLimiter, 20)
+    if (rateLimitResponse) return rateLimitResponse
+
+    const body = await request.json()
+    
+    // Validation
+    const validation = validateData(aiAssistantSchema, body)
+    if (!validation.success) {
+      return Response.json(
+        { error: "Invalid request data", details: validation.errors?.format() },
+        { status: 400 }
+      )
+    }
+
+    const { messages, language } = validation.data
 
     const systemPrompt =
       language === "ar"

@@ -4,8 +4,9 @@ import { useState, useEffect } from "react"
 import { createBrowserClient } from "@supabase/ssr"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Plus, Loader2 } from "lucide-react"
+import { Plus, Loader2, Map } from "lucide-react"
 import Link from "next/link"
+import { FieldMap } from "@/components/maps/field-map"
 
 export default function FieldsPage() {
   const [fields, setFields] = useState<any[]>([])
@@ -74,6 +75,35 @@ export default function FieldsPage() {
           </Link>
         </div>
       </div>
+
+      {/* إضافة الخريطة التفاعلية */}
+      {fields.length > 0 && (
+        <Card className="p-4">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-lg font-semibold flex items-center gap-2">
+              <Map className="h-5 w-5" />
+              {lang === "ar" ? "خريطة الحقول" : "Fields Map"}
+            </h2>
+          </div>
+          <FieldMap
+            fields={fields.map(field => ({
+              id: field.id,
+              name: field.name || field.name_ar,
+              center: field.boundaries?.length > 0 
+                ? [field.boundaries[0][0], field.boundaries[0][1]]
+                : [field.longitude || 31.2357, field.latitude || 30.0444],
+              boundaries: field.boundaries,
+              area: field.area,
+              crop_type: field.crop_type || field.crop_type_ar
+            }))}
+            height="400px"
+            showSatellite={true}
+            onFieldClick={(fieldId) => {
+              window.location.href = `/dashboard/fields/${fieldId}`
+            }}
+          />
+        </Card>
+      )}
 
       {loading ? (
         <div className="flex items-center justify-center py-12">
