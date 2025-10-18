@@ -1,8 +1,29 @@
+import { weatherQuerySchema, validateData } from "@/lib/validation/schemas"
+import { apiLimiter, checkRateLimit } from "@/lib/security/rate-limiter"
+
 export async function GET(request: Request) {
   try {
+    // Rate limiting
+    const identifier = request.headers.get("x-forwarded-for") || "anonymous"
+    const rateLimitResponse = await checkRateLimit(identifier, apiLimiter, 60)
+    if (rateLimitResponse) return rateLimitResponse
+
     const { searchParams } = new URL(request.url)
-    const location = searchParams.get("location") || "Cairo,EG"
-    const lang = searchParams.get("lang") || "en"
+    const queryParams = {
+      location: searchParams.get("location") || "Cairo,EG",
+      lang: searchParams.get("lang") || "en"
+    }
+
+    // Validation
+    const validation = validateData(weatherQuerySchema, queryParams)
+    if (!validation.success) {
+      return Response.json(
+        { error: "Invalid query parameters", details: validation.errors?.format() },
+        { status: 400 }
+      )
+    }
+
+    const { location, lang } = validation.data
 
     const apiKey = process.env.OPENWEATHER_API_KEY
     if (!apiKey) {

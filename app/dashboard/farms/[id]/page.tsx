@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { ArrowLeft, MapPin, Loader2, Plus } from "lucide-react"
 import Link from "next/link"
+import { FieldMap } from "@/components/maps/field-map"
 
 export default function FarmDetailsPage() {
   const params = useParams()
@@ -141,6 +142,34 @@ export default function FarmDetailsPage() {
           <p className="text-muted-foreground">{farm.description}</p>
         </Card>
       )}
+
+      {/* خريطة المزرعة والحقول */}
+      <Card className="p-4">
+        <div className="mb-4">
+          <h2 className="text-lg font-semibold">
+            {lang === "ar" ? "موقع المزرعة والحقول" : "Farm and Fields Location"}
+          </h2>
+        </div>
+        <FieldMap
+          center={[farm.longitude, farm.latitude]}
+          fields={fields.map(field => ({
+            id: field.id,
+            name: field.name || field.name_ar,
+            center: field.boundaries?.length > 0 
+              ? [field.boundaries[0][0], field.boundaries[0][1]]
+              : [farm.longitude, farm.latitude],
+            boundaries: field.boundaries,
+            area: field.area,
+            crop_type: field.crop_type || field.crop_type_ar
+          }))}
+          height="400px"
+          zoom={14}
+          showSatellite={true}
+          onFieldClick={(fieldId) => {
+            router.push(`/dashboard/fields/${fieldId}`)
+          }}
+        />
+      </Card>
 
       <div className="space-y-4">
         <div className="flex items-center justify-between">
