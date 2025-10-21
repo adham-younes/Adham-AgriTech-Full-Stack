@@ -1,4 +1,5 @@
 import { streamText } from "ai"
+import { createOpenAI } from "@ai-sdk/openai"
 
 export async function POST(request: Request) {
   try {
@@ -25,17 +26,23 @@ export async function POST(request: Request) {
 
 Provide clear and helpful answers in English.`
 
+    const openai = createOpenAI({
+      apiKey: process.env.OPENAI_API_KEY || '',
+    })
+
     const result = await streamText({
-      model: "groq/llama-3.3-70b-versatile",
+      model: openai('gpt-3.5-turbo'),
       system: systemPrompt,
       messages,
       temperature: 0.7,
-      maxTokens: 1000,
     })
 
-    return result.toDataStreamResponse()
+    return result.toTextStreamResponse()
   } catch (error) {
     console.error("[v0] Error in AI assistant:", error)
-    return Response.json({ error: "Failed to process request" }, { status: 500 })
+    return new Response(JSON.stringify({ error: "Failed to process request" }), { 
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    })
   }
 }
