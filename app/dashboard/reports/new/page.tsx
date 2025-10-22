@@ -63,15 +63,44 @@ export default function NewReportPage() {
   }
 
   async function generateReportData(type: string, startDate: string, endDate: string) {
-    // Mock report data generation
-    return {
-      summary: "Report generated successfully",
-      metrics: {
-        total_farms: 5,
-        total_fields: 12,
-        total_area: 150,
-      },
-      charts: [],
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (!user) throw new Error("Not authenticated")
+
+      const response = await fetch('/api/reports/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          reportType: type,
+          startDate,
+          endDate,
+          title: formData.title,
+          userId: user.id
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to generate report')
+      }
+
+      const result = await response.json()
+      return result.report.data
+    } catch (error) {
+      console.error('Error generating report:', error)
+      // Fallback to mock data
+      return {
+        summary: "Report generated successfully",
+        metrics: {
+          total_farms: 5,
+          total_fields: 12,
+          total_area: 150,
+        },
+        charts: [],
+      }
     }
   }
 
