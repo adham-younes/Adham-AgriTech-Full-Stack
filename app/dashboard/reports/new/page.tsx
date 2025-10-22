@@ -16,7 +16,7 @@ import Link from "next/link"
 export default function NewReportPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const [lang, setLang] = useState<"ar" | "en">("ar")
+  const [lang, setLang] = useState<"ar" | "en">("en")
   const [formData, setFormData] = useState({
     title: "",
     report_type: "",

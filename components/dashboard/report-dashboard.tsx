@@ -61,7 +61,7 @@ interface ReportSummary {
 export default function ReportDashboard() {
   const [reports, setReports] = useState<ReportSummary[]>([])
   const [loading, setLoading] = useState(true)
-  const [lang, setLang] = useState<"ar" | "en">("ar")
+  const [lang, setLang] = useState<"ar" | "en">("en")
 
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -128,7 +128,7 @@ export default function ReportDashboard() {
   }
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString(lang === "ar" ? "ar-EG" : "en-US")
+    return new Date(dateString).toLocaleDateString("en-US")
   }
 
   const t = {
@@ -201,7 +201,7 @@ export default function ReportDashboard() {
         <h1 className="text-3xl font-bold">{t[lang].title}</h1>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" onClick={() => setLang(lang === "ar" ? "en" : "ar")}>
-            {lang === "ar" ? "EN" : "ع"}
+            {lang === "en" ? "ع" : "EN"}
           </Button>
           <Link href="/dashboard/reports/new">
             <Button className="gap-2">

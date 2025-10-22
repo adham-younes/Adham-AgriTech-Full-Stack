@@ -7,8 +7,8 @@ import { Suspense } from "react"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Adham AgriTech - منصة الزراعة الذكية",
-  description: "Smart Agriculture Platform for Egyptian Farmers - منصة الزراعة الذكية للمزارعين المصريين",
+  title: "Adham AgriTech - Smart Agriculture Platform",
+  description: "Smart Agriculture Platform for Farmers - Comprehensive farm management using AI, satellite technology, and blockchain",
   generator: "v0.app",
 }
 
@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="ar" dir="rtl" className="dark">
+    <html lang="en" dir="ltr" className="dark">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
         <Suspense fallback={null}>{children}</Suspense>
         <Analytics />

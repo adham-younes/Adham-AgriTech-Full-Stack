@@ -162,7 +162,7 @@ export default function ReportViewPage() {
   const params = useParams()
   const [report, setReport] = useState<any>(null)
   const [loading, setLoading] = useState(true)
-  const [lang, setLang] = useState<"ar" | "en">("ar")
+  const [lang, setLang] = useState<"ar" | "en">("en")
 
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -213,7 +213,7 @@ export default function ReportViewPage() {
   }
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString(lang === "ar" ? "ar-EG" : "en-US")
+    return new Date(dateString).toLocaleDateString("en-US")
   }
 
   const t = {
@@ -369,7 +369,7 @@ export default function ReportViewPage() {
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" onClick={() => setLang(lang === "ar" ? "en" : "ar")}>
-            {lang === "ar" ? "EN" : "ع"}
+            {lang === "en" ? "ع" : "EN"}
           </Button>
           <Button className="gap-2">
             <Download className="h-4 w-4" />

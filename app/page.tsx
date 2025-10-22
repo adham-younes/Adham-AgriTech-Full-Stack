@@ -24,10 +24,9 @@ export default function HomePage() {
           <h1 className="mb-6 text-6xl font-bold tracking-tight sm:text-7xl md:text-8xl bg-gradient-to-b from-white via-white to-white/60 bg-clip-text text-transparent drop-shadow-2xl">
             Adham AgriTech
           </h1>
-          <p className="mb-4 text-3xl font-bold text-primary drop-shadow-glow sm:text-4xl">منصة الزراعة الذكية</p>
+          <p className="mb-4 text-3xl font-bold text-primary drop-shadow-glow sm:text-4xl">Smart Agriculture Platform</p>
           <p className="mx-auto mb-12 max-w-2xl text-lg text-gray-400 sm:text-xl leading-relaxed">
-            نظام متكامل لإدارة المزارع باستخدام الذكاء الاصطناعي والأقمار الصناعية والبلوكتشين لتحسين الإنتاجية وتوفير
-            الموارد
+            Comprehensive farm management system using AI, satellite technology, and blockchain to improve productivity and optimize resources
           </p>
 
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
@@ -38,7 +37,7 @@ export default function HomePage() {
             >
               <Link href="/auth/signup">
                 <Sparkles className="mr-2 h-5 w-5" />
-                ابدأ الآن مجاناً
+                Start Free Now
               </Link>
             </Button>
             <Button
@@ -47,7 +46,7 @@ export default function HomePage() {
               variant="outline"
               className="text-lg glass-card border-primary/30 hover:border-primary/60 hover:scale-105 transition-all duration-300 bg-transparent"
             >
-              <Link href="/auth/login">تسجيل الدخول</Link>
+              <Link href="/auth/login">Sign In</Link>
             </Button>
           </div>
         </div>
@@ -58,40 +57,40 @@ export default function HomePage() {
         <div className="mx-auto max-w-6xl relative z-10">
           <div className="mb-16 text-center">
             <h2 className="mb-4 text-4xl font-bold sm:text-5xl bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
-              مميزات المنصة
+              Platform Features
             </h2>
-            <p className="text-lg text-gray-400">حلول متقدمة لإدارة مزرعتك بكفاءة عالية</p>
+            <p className="text-lg text-gray-400">Advanced solutions for efficient farm management</p>
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             <FeatureCard
               icon={<Leaf className="h-8 w-8" />}
-              title="مراقبة المحاصيل"
-              description="تتبع صحة المحاصيل باستخدام صور الأقمار الصناعية ومؤشرات NDVI و EVI"
+              title="Crop Monitoring"
+              description="Track crop health using satellite imagery and NDVI/EVI indicators"
             />
             <FeatureCard
               icon={<Droplets className="h-8 w-8" />}
-              title="إدارة الري الذكي"
-              description="التحكم في أنظمة الري وجدولة الري بناءً على بيانات التربة والطقس"
+              title="Smart Irrigation"
+              description="Control irrigation systems and schedule watering based on soil and weather data"
             />
             <FeatureCard
               icon={<Cloud className="h-8 w-8" />}
-              title="توقعات الطقس"
-              description="توقعات دقيقة للطقس لمدة 7 أيام لتخطيط أفضل للأنشطة الزراعية"
+              title="Weather Forecasts"
+              description="Accurate 7-day weather predictions for better agricultural planning"
             />
             <FeatureCard
               icon={<BarChart3 className="h-8 w-8" />}
-              title="تحليل التربة"
-              description="تحليل شامل للتربة مع توصيات ذكية للأسمدة والري"
+              title="Soil Analysis"
+              description="Comprehensive soil analysis with smart fertilizer and irrigation recommendations"
             />
             <FeatureCard
               icon={<MessageSquare className="h-8 w-8" />}
-              title="مساعد ذكي"
-              description="مساعد زراعي ذكي يجيب على أسئلتك ويقدم نصائح مخصصة"
+              title="AI Assistant"
+              description="Smart agricultural assistant that answers your questions and provides personalized advice"
             />
             <FeatureCard
               icon={<Shield className="h-8 w-8" />}
-              title="البلوكتشين"
-              description="عقود ذكية وNFTs لملكية الأراضي والشفافية الكاملة"
+              title="Blockchain"
+              description="Smart contracts and NFTs for land ownership and complete transparency"
             />
           </div>
         </div>
@@ -101,9 +100,9 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-emerald-500/10 to-primary/10" />
         <div className="mx-auto max-w-6xl relative z-10">
           <div className="grid gap-8 sm:grid-cols-3">
-            <StatCard number="10,000+" label="مزارع نشط" />
-            <StatCard number="50,000+" label="هكتار مُدار" />
-            <StatCard number="30%" label="زيادة الإنتاجية" />
+            <StatCard number="10,000+" label="Active Farms" />
+            <StatCard number="50,000+" label="Hectares Managed" />
+            <StatCard number="30%" label="Productivity Increase" />
           </div>
         </div>
       </section>
@@ -114,10 +113,10 @@ export default function HomePage() {
           <div className="glass-card p-12 rounded-3xl shadow-3d">
             <Zap className="h-16 w-16 text-primary mx-auto mb-6 drop-shadow-glow" />
             <h2 className="mb-6 text-4xl font-bold sm:text-5xl bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
-              جاهز لتحسين إنتاجية مزرعتك؟
+              Ready to Improve Your Farm's Productivity?
             </h2>
             <p className="mb-8 text-lg text-gray-400">
-              انضم إلى آلاف المزارعين الذين يستخدمون Adham AgriTech لإدارة مزارعهم
+              Join thousands of farmers using Adham AgriTech to manage their farms
             </p>
             <Button
               asChild
@@ -126,7 +125,7 @@ export default function HomePage() {
             >
               <Link href="/auth/signup">
                 <Sparkles className="mr-2 h-5 w-5" />
-                ابدأ الآن
+                Get Started
               </Link>
             </Button>
           </div>
@@ -136,9 +135,9 @@ export default function HomePage() {
       <footer className="border-t border-primary/20 bg-black/50 backdrop-blur-xl px-6 py-8">
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-gray-400">© 2025 Adham AgriTech. جميع الحقوق محفوظة.</p>
+            <p className="text-sm text-gray-400">© 2025 Adham AgriTech. All rights reserved.</p>
             <Link href="/partners" className="text-sm text-primary hover:text-primary/80 transition-colors">
-              شركاؤنا
+              Our Partners
             </Link>
           </div>
         </div>
