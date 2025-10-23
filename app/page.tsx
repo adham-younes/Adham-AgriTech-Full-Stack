@@ -4,6 +4,7 @@ import Link from "next/link"
 import { Sprout, Leaf, Droplets, Cloud, BarChart3, MessageSquare, Sparkles, Shield, Zap } from "lucide-react"
 import LanguageToggle from "@/components/language-toggle"
 
+// Force redeploy trigger for DNS update
 export default function HomePage() {
   return (
     <div className="flex min-h-screen flex-col bg-black">
