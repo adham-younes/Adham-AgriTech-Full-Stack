@@ -2,10 +2,12 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { ArrowRight, CheckCircle2 } from "lucide-react"
 import Image from "next/image"
+import type React from "react"
+import { Leaf, Droplets, Cloud, Satellite, Microscope, Truck } from "lucide-react"
 
 export default function PartnersPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="flex min-h-screen flex-col bg-black">
       {/* Hero Section */}
       <section className="relative overflow-hidden px-6 py-32">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />

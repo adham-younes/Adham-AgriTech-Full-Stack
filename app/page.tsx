@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { Sprout, Leaf, Droplets, Cloud, BarChart3, MessageSquare, Sparkles, Shield, Zap } from "lucide-react"
 
+// Force redeploy trigger
 export default function HomePage() {
   return (
     <div className="flex min-h-screen flex-col bg-black">
@@ -65,32 +66,32 @@ export default function HomePage() {
             <FeatureCard
               icon={<Leaf className="h-8 w-8" />}
               title="Crop Monitoring"
-              description="Track crop health using satellite imagery and NDVI/EVI indicators"
+              description="Advanced satellite imagery with NDVI/EVI indicators for real-time crop health tracking and yield prediction"
             />
             <FeatureCard
               icon={<Droplets className="h-8 w-8" />}
               title="Smart Irrigation"
-              description="Control irrigation systems and schedule watering based on soil and weather data"
+              description="AI-powered irrigation control with soil moisture sensors and weather-based scheduling for optimal water usage"
             />
             <FeatureCard
               icon={<Cloud className="h-8 w-8" />}
               title="Weather Forecasts"
-              description="Accurate 7-day weather predictions for better agricultural planning"
+              description="Hyper-local 14-day weather predictions with precipitation, temperature, and wind patterns for precise planning"
             />
             <FeatureCard
               icon={<BarChart3 className="h-8 w-8" />}
               title="Soil Analysis"
-              description="Comprehensive soil analysis with smart fertilizer and irrigation recommendations"
+              description="Comprehensive soil composition analysis with smart fertilizer recommendations and irrigation optimization"
             />
             <FeatureCard
               icon={<MessageSquare className="h-8 w-8" />}
               title="AI Assistant"
-              description="Smart agricultural assistant that answers your questions and provides personalized advice"
+              description="24/7 agricultural AI expert that provides personalized advice, pest identification, and treatment recommendations"
             />
             <FeatureCard
               icon={<Shield className="h-8 w-8" />}
-              title="Blockchain"
-              description="Smart contracts and NFTs for land ownership and complete transparency"
+              title="Blockchain Technology"
+              description="Secure land ownership records, transparent supply chain tracking, and smart contracts for automated operations"
             />
           </div>
         </div>
@@ -100,9 +101,9 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-emerald-500/10 to-primary/10" />
         <div className="mx-auto max-w-6xl relative z-10">
           <div className="grid gap-8 sm:grid-cols-3">
-            <StatCard number="10,000+" label="Active Farms" />
-            <StatCard number="50,000+" label="Hectares Managed" />
-            <StatCard number="30%" label="Productivity Increase" />
+            <StatCard number="15,000+" label="Active Farms" />
+            <StatCard number="75,000+" label="Hectares Managed" />
+            <StatCard number="40%" label="Avg. Productivity Increase" />
           </div>
         </div>
       </section>
@@ -113,10 +114,10 @@ export default function HomePage() {
           <div className="glass-card p-12 rounded-3xl shadow-3d">
             <Zap className="h-16 w-16 text-primary mx-auto mb-6 drop-shadow-glow" />
             <h2 className="mb-6 text-4xl font-bold sm:text-5xl bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
-              Ready to Improve Your Farm's Productivity?
+              Transform Your Farming Operations Today
             </h2>
             <p className="mb-8 text-lg text-gray-400">
-              Join thousands of farmers using Adham AgriTech to manage their farms
+              Join 15,000+ farmers already using Adham AgriTech to increase productivity by up to 40%
             </p>
             <Button
               asChild
