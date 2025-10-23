@@ -2,12 +2,10 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { ArrowRight, CheckCircle2 } from "lucide-react"
 import Image from "next/image"
-import type React from "react"
-import { Leaf, Droplets, Cloud, Satellite, Microscope, Truck } from "lucide-react"
 
 export default function PartnersPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-black">
+    <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <section className="relative overflow-hidden px-6 py-32">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
@@ -136,22 +134,22 @@ export default function PartnersPage() {
 const techPartners = [
   {
     name: "Google Earth Engine",
-    logo: "/placeholder.svg?height=60&width=160",
+    logo: "https://www.gstatic.com/images/branding/product/1x/earth_engine_64dp.png",
     description: "خدمات الأقمار الصناعية والتحليل الجغرافي",
   },
   {
     name: "OpenAI",
-    logo: "/placeholder.svg?height=60&width=160",
+    logo: "https://cdn.openai.com/API/docs/images/openai-logo.png",
     description: "الذكاء الاصطناعي والمساعد الذكي",
   },
   {
     name: "Microsoft Azure",
-    logo: "/placeholder.svg?height=60&width=160",
+    logo: "https://www.microsoft.com/favicon.ico",
     description: "الحوسبة السحابية والبنية التحتية",
   },
   {
     name: "Ethereum",
-    logo: "/placeholder.svg?height=60&width=160",
+    logo: "https://ethereum.org/favicon.ico",
     description: "تقنية البلوكتشين والعقود الذكية",
   },
 ]
@@ -159,19 +157,19 @@ const techPartners = [
 const agriPartners = [
   {
     name: "وزارة الزراعة المصرية",
-    logo: "/placeholder.svg?height=50&width=140",
+    logo: "https://www.agr.gov.eg/favicon.ico",
     description: "الشريك الحكومي الرسمي",
     services: ["الدعم الفني", "التدريب", "الإرشاد الزراعي"],
   },
   {
     name: "شركة الأسمدة المصرية",
-    logo: "/placeholder.svg?height=50&width=140",
+    logo: "https://www.efco.com.eg/favicon.ico",
     description: "توريد الأسمدة والمبيدات",
     services: ["أسمدة عضوية", "مبيدات آمنة", "استشارات"],
   },
   {
     name: "بنك التنمية الزراعي",
-    logo: "/placeholder.svg?height=50&width=140",
+    logo: "https://www.adb.gov.eg/favicon.ico",
     description: "التمويل والقروض الزراعية",
     services: ["قروض ميسرة", "تأمين المحاصيل", "دعم مالي"],
   },

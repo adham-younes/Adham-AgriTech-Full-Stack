@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Plus, Loader2, TrendingUp } from "lucide-react"
 import Link from "next/link"
+import { SatelliteMap } from "@/components/satellite-map"
 
 export default function CropMonitoringPage() {
   const [monitoring, setMonitoring] = useState<any[]>([])
@@ -136,63 +137,76 @@ export default function CropMonitoringPage() {
           </div>
         </Card>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {monitoring.map((item) => (
-            <Card
-              key={item.id}
-              className="glass-card p-6 border-white/10 hover:border-green-500/50 hover:shadow-glow transition-all group"
-            >
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-lg font-bold text-white mb-1 group-hover:text-green-400 transition-colors">
-                    {item.fields?.name}
-                  </h3>
-                  <p className="text-sm text-gray-400">
-                    {t[lang].farm}: {item.fields?.farms?.name}
-                  </p>
-                  <p className="text-xs text-gray-500 mt-1">
-                    {t[lang].date}:{" "}
-                    {new Date(item.monitoring_date).toLocaleDateString(lang === "ar" ? "ar-EG" : "en-US")}
-                  </p>
-                </div>
+        <div className="space-y-6">
+          {monitoring[0] && (
+            <SatelliteMap
+              latitude={monitoring[0].fields?.latitude || 25.2854}
+              longitude={monitoring[0].fields?.longitude || 32.6421}
+              fieldName={monitoring[0].fields?.name || "Field"}
+              ndviValue={monitoring[0].ndvi_value || 0.5}
+              healthStatus={monitoring[0].health_status || "good"}
+              lang={lang}
+            />
+          )}
 
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-400">{t[lang].health}:</span>
-                  <Badge className={`${getHealthColor(item.health_status)} border-0 shadow-glow`}>
-                    {t[lang][item.health_status as keyof typeof t.ar] || item.health_status}
-                  </Badge>
-                </div>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {monitoring.map((item) => (
+              <Card
+                key={item.id}
+                className="glass-card p-6 border-white/10 hover:border-green-500/50 hover:shadow-glow transition-all group"
+              >
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-bold text-white mb-1 group-hover:text-green-400 transition-colors">
+                      {item.fields?.name}
+                    </h3>
+                    <p className="text-sm text-gray-400">
+                      {t[lang].farm}: {item.fields?.farms?.name}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {t[lang].date}:{" "}
+                      {new Date(item.monitoring_date).toLocaleDateString(lang === "ar" ? "ar-EG" : "en-US")}
+                    </p>
+                  </div>
 
-                <div className="grid grid-cols-2 gap-4 pt-2 border-t border-white/10">
-                  <div className="space-y-1">
-                    <p className="text-xs text-gray-400">{t[lang].ndvi}</p>
-                    <div className="flex items-center gap-1">
-                      <TrendingUp className="h-3 w-3 text-green-400" />
-                      <p className="text-lg font-bold text-green-400">{item.ndvi_value?.toFixed(2) || "N/A"}</p>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-400">{t[lang].health}:</span>
+                    <Badge className={`${getHealthColor(item.health_status)} border-0 shadow-glow`}>
+                      {t[lang][item.health_status as keyof typeof t.ar] || item.health_status}
+                    </Badge>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 pt-2 border-t border-white/10">
+                    <div className="space-y-1">
+                      <p className="text-xs text-gray-400">{t[lang].ndvi}</p>
+                      <div className="flex items-center gap-1">
+                        <TrendingUp className="h-3 w-3 text-green-400" />
+                        <p className="text-lg font-bold text-green-400">{item.ndvi_value?.toFixed(2) || "N/A"}</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      <p className="text-xs text-gray-400">{t[lang].evi}</p>
+                      <div className="flex items-center gap-1">
+                        <TrendingUp className="h-3 w-3 text-green-400" />
+                        <p className="text-lg font-bold text-green-400">{item.evi_value?.toFixed(2) || "N/A"}</p>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="space-y-1">
-                    <p className="text-xs text-gray-400">{t[lang].evi}</p>
-                    <div className="flex items-center gap-1">
-                      <TrendingUp className="h-3 w-3 text-green-400" />
-                      <p className="text-lg font-bold text-green-400">{item.evi_value?.toFixed(2) || "N/A"}</p>
-                    </div>
-                  </div>
+                  <Link href={`/dashboard/crop-monitoring/${item.id}`}>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full glass-card border-white/10 hover:border-green-500/50 hover:shadow-glow transition-all bg-transparent"
+                    >
+                      {t[lang].viewDetails}
+                    </Button>
+                  </Link>
                 </div>
-
-                <Link href={`/dashboard/crop-monitoring/${item.id}`}>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full glass-card border-white/10 hover:border-green-500/50 hover:shadow-glow transition-all bg-transparent"
-                  >
-                    {t[lang].viewDetails}
-                  </Button>
-                </Link>
-              </div>
-            </Card>
-          ))}
+              </Card>
+            ))}
+          </div>
         </div>
       )}
     </div>

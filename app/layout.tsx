@@ -4,13 +4,12 @@ import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
-import { Navbar } from "@/components/navbar"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Adham AgriTech - Advanced Smart Agriculture Platform",
-  description: "Revolutionary farm management system using AI, satellite technology, and blockchain to boost productivity by 40%",
-  generator: "Adham AgriTech",
+  title: "Adham AgriTech - منصة الزراعة الذكية",
+  description: "Smart Agriculture Platform for Egyptian Farmers - منصة الزراعة الذكية للمزارعين المصريين",
+  generator: "v0.app",
 }
 
 export default function RootLayout({
@@ -19,9 +18,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" dir="ltr" className="dark">
-      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
-        <Navbar />
+    <html lang="ar" dir="rtl" className="dark scroll-smooth">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+      </head>
+      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
         <Suspense fallback={null}>{children}</Suspense>
         <Analytics />
       </body>

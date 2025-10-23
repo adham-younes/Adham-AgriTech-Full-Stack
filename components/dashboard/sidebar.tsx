@@ -17,6 +17,7 @@ import {
   Settings,
   Wallet,
   Handshake,
+  Activity,
 } from "lucide-react"
 
 interface SidebarProps {
@@ -38,6 +39,7 @@ const navigation = [
   { name: "الإشعارات", nameEn: "Notifications", href: "/dashboard/notifications", icon: Bell },
   { name: "السوق", nameEn: "Marketplace", href: "/dashboard/marketplace", icon: ShoppingCart },
   { name: "المنتدى", nameEn: "Forum", href: "/dashboard/forum", icon: Users },
+  { name: "حالة الخدمات", nameEn: "Services", href: "/dashboard/services", icon: Activity },
   { name: "الشركاء", nameEn: "Partners", href: "/partners", icon: Handshake },
 ]
 
@@ -45,7 +47,7 @@ export function DashboardSidebar({ user, profile }: SidebarProps) {
   const pathname = usePathname()
 
   return (
-    <aside className="flex w-64 flex-col border-l bg-sidebar">
+    <aside className="flex w-full flex-col border-l bg-sidebar">
       {/* Logo */}
       <div className="flex h-16 items-center gap-3 border-b border-sidebar-border px-6">
         <div className="glow-primary flex h-10 w-10 items-center justify-center rounded-xl bg-primary shadow-lg">
@@ -72,7 +74,7 @@ export function DashboardSidebar({ user, profile }: SidebarProps) {
                   : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-accent-foreground",
               )}
             >
-              <item.icon className="h-5 w-5" />
+              <item.icon className="h-5 w-5 flex-shrink-0" />
               <span>{item.name}</span>
             </Link>
           )
@@ -90,7 +92,7 @@ export function DashboardSidebar({ user, profile }: SidebarProps) {
               : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-accent-foreground",
           )}
         >
-          <Settings className="h-5 w-5" />
+          <Settings className="h-5 w-5 flex-shrink-0" />
           <span>الإعدادات</span>
         </Link>
       </div>

@@ -10,6 +10,7 @@ import { Progress } from "@/components/ui/progress"
 import { ArrowLeft, Loader2, MapPin } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import { SatelliteMap } from "@/components/satellite-map"
 
 export default function CropMonitoringDetailsPage() {
   const params = useParams()
@@ -250,6 +251,17 @@ export default function CropMonitoringDetailsPage() {
           )}
         </div>
       </Card>
+
+      {monitoring.fields?.farms && (
+        <SatelliteMap
+          latitude={monitoring.fields.farms.latitude || 30.0444}
+          longitude={monitoring.fields.farms.longitude || 31.2357}
+          fieldName={monitoring.fields.name}
+          ndviValue={monitoring.ndvi_value}
+          healthStatus={monitoring.health_status}
+          lang={lang}
+        />
+      )}
 
       {monitoring.satellite_image_url && (
         <Card className="p-6">
