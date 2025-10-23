@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { Sprout, Leaf, Droplets, Cloud, BarChart3, MessageSquare, Sparkles, Shield, Zap } from "lucide-react"
 
-// Force redeploy trigger
+// Force redeploy trigger v2
 export default function HomePage() {
   return (
     <div className="flex min-h-screen flex-col bg-black">
