@@ -34,9 +34,9 @@ export default async function DashboardPage() {
     <div className="space-y-6">
       <div className="glass-card p-6 rounded-2xl shadow-3d">
         <h2 className="text-4xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-          لوحة التحكم
+          Smart Agriculture Dashboard
         </h2>
-        <p className="text-gray-400 mt-2">نظرة عامة على مزارعك وحقولك</p>
+        <p className="text-gray-400 mt-2">Monitor your farms with AI-powered insights and satellite technology</p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

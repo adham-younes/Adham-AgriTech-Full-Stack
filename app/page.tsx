@@ -47,9 +47,9 @@ export default function HomePage() {
               size="lg"
               className="text-base sm:text-lg shadow-3d shadow-primary/50 hover:shadow-primary/70 hover:scale-105 transition-all duration-300"
             >
-              <Link href="/auth/signup">
+              <Link href="/dashboard">
                 <Sparkles className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                Start Free Now
+                Explore Platform
               </Link>
             </Button>
             <Button
@@ -58,7 +58,7 @@ export default function HomePage() {
               variant="outline"
               className="text-base sm:text-lg glass-card border-primary/30 hover:border-primary/60 hover:scale-105 transition-all duration-300 bg-transparent"
             >
-              <Link href="/auth/login">Sign In</Link>
+              <Link href="/dashboard/satellite">View Satellite Map</Link>
             </Button>
           </div>
         </div>
@@ -135,7 +135,7 @@ export default function HomePage() {
               size="lg"
               className="text-base sm:text-lg shadow-3d shadow-primary/50 hover:shadow-primary/70 hover:scale-105 transition-all duration-300"
             >
-              <Link href="/auth/signup">
+              <Link href="/dashboard">
                 <Sparkles className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                 Get Started
               </Link>

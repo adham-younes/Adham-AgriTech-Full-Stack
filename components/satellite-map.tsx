@@ -1,171 +1,214 @@
 "use client"
 
-import { useEffect, useRef } from "react"
-import { Card } from "@/components/ui/card"
+import { useState, useEffect, useRef } from "react"
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet"
+import L from "leaflet"
+import "leaflet/dist/leaflet.css"
+
+// Fix for default markers in React Leaflet
+delete (L.Icon.Default.prototype as any)._getIconUrl
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+})
 
 interface SatelliteMapProps {
-  latitude: number
-  longitude: number
-  fieldName: string
-  ndviValue?: number
-  healthStatus?: string
-  lang: "ar" | "en"
+  center?: [number, number]
+  zoom?: number
+  height?: string
+  showControls?: boolean
+  onLocationSelect?: (lat: number, lng: number) => void
 }
 
-export function SatelliteMap({
-  latitude,
-  longitude,
-  fieldName,
-  ndviValue = 0.5,
-  healthStatus = "good",
-  lang,
+export function SatelliteMap({ 
+  center = [30.0444, 31.2357], // Cairo, Egypt
+  zoom = 10,
+  height = "400px",
+  showControls = true,
+  onLocationSelect
 }: SatelliteMapProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [mapCenter, setMapCenter] = useState<[number, number]>(center)
+  const [mapZoom, setMapZoom] = useState(zoom)
+  const [selectedLocation, setSelectedLocation] = useState<[number, number] | null>(null)
+  const [satelliteData, setSatelliteData] = useState<any>(null)
 
-  useEffect(() => {
-    if (!canvasRef.current) return
-
-    const canvas = canvasRef.current
-    const ctx = canvas.getContext("2d")
-    if (!ctx) return
-
-    // Set canvas size
-    canvas.width = canvas.offsetWidth
-    canvas.height = canvas.offsetHeight
-
-    // Draw satellite map background
-    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height)
-    gradient.addColorStop(0, "#1a1a2e")
-    gradient.addColorStop(0.5, "#16213e")
-    gradient.addColorStop(1, "#0f3460")
-    ctx.fillStyle = gradient
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
-
-    // Draw NDVI heatmap
-    const cellSize = 20
-    for (let x = 0; x < canvas.width; x += cellSize) {
-      for (let y = 0; y < canvas.height; y += cellSize) {
-        // Create variation based on position and NDVI value
-        const variation = Math.sin(x / 50) * Math.cos(y / 50) * 0.3
-        const value = Math.max(0, Math.min(1, ndviValue + variation))
-
-        // Color based on NDVI value (red to green)
-        let color: string
-        if (value < 0.3) {
-          color = `rgb(${Math.floor(255 * (1 - value))}, 0, 0)` // Red
-        } else if (value < 0.6) {
-          color = `rgb(255, ${Math.floor((255 * (value - 0.3)) / 0.3)}, 0)` // Orange to Yellow
-        } else {
-          color = `rgb(${Math.floor(255 * (1 - (value - 0.6) / 0.4))}, 255, 0)` // Yellow to Green
-        }
-
-        ctx.fillStyle = color
-        ctx.globalAlpha = 0.6
-        ctx.fillRect(x, y, cellSize, cellSize)
-      }
-    }
-
-    ctx.globalAlpha = 1
-
-    // Draw grid
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.1)"
-    ctx.lineWidth = 1
-    for (let x = 0; x < canvas.width; x += 50) {
-      ctx.beginPath()
-      ctx.moveTo(x, 0)
-      ctx.lineTo(x, canvas.height)
-      ctx.stroke()
-    }
-    for (let y = 0; y < canvas.height; y += 50) {
-      ctx.beginPath()
-      ctx.moveTo(0, y)
-      ctx.lineTo(canvas.width, y)
-      ctx.stroke()
-    }
-
-    // Draw center marker
-    const centerX = canvas.width / 2
-    const centerY = canvas.height / 2
-    const markerSize = 15
-
-    // Glow effect
-    const glowGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, markerSize * 2)
-    glowGradient.addColorStop(0, "rgba(34, 197, 94, 0.6)")
-    glowGradient.addColorStop(1, "rgba(34, 197, 94, 0)")
-    ctx.fillStyle = glowGradient
-    ctx.fillRect(centerX - markerSize * 2, centerY - markerSize * 2, markerSize * 4, markerSize * 4)
-
-    // Center circle
-    ctx.fillStyle = "#22c55e"
-    ctx.beginPath()
-    ctx.arc(centerX, centerY, markerSize, 0, Math.PI * 2)
-    ctx.fill()
-
-    // Inner circle
-    ctx.fillStyle = "#ffffff"
-    ctx.beginPath()
-    ctx.arc(centerX, centerY, markerSize / 2, 0, Math.PI * 2)
-    ctx.fill()
-
-    // Draw coordinates text
-    ctx.fillStyle = "#ffffff"
-    ctx.font = "12px sans-serif"
-    ctx.textAlign = "center"
-    ctx.fillText(`${latitude.toFixed(4)}°`, centerX, canvas.height - 20)
-    ctx.fillText(`${longitude.toFixed(4)}°`, centerX, canvas.height - 5)
-  }, [latitude, longitude, ndviValue])
-
-  const t = {
-    ar: {
-      satelliteMap: "خريطة الأقمار الصناعية",
-      ndvi: "مؤشر NDVI",
-      coordinates: "الإحداثيات",
-      health: "الحالة الصحية",
+  // Demo satellite data
+  const demoFields = [
+    {
+      id: 1,
+      name: "Field Alpha",
+      coordinates: [30.0444, 31.2357] as [number, number],
+      crop: "Wheat",
+      health: 85,
+      area: 2.5,
+      lastUpdate: "2025-01-21"
     },
-    en: {
-      satelliteMap: "Satellite Map",
-      ndvi: "NDVI Index",
-      coordinates: "Coordinates",
-      health: "Health Status",
+    {
+      id: 2,
+      name: "Field Beta", 
+      coordinates: [30.0544, 31.2457] as [number, number],
+      crop: "Corn",
+      health: 72,
+      area: 3.2,
+      lastUpdate: "2025-01-21"
     },
+    {
+      id: 3,
+      name: "Field Gamma",
+      coordinates: [30.0344, 31.2257] as [number, number],
+      crop: "Rice",
+      health: 91,
+      area: 1.8,
+      lastUpdate: "2025-01-21"
+    }
+  ]
+
+  const handleMapClick = (e: any) => {
+    const { lat, lng } = e.latlng
+    setSelectedLocation([lat, lng])
+    onLocationSelect?.(lat, lng)
+  }
+
+  const getHealthColor = (health: number) => {
+    if (health >= 80) return "text-green-500"
+    if (health >= 60) return "text-yellow-500"
+    return "text-red-500"
+  }
+
+  const getHealthStatus = (health: number) => {
+    if (health >= 80) return "Excellent"
+    if (health >= 60) return "Good"
+    return "Needs Attention"
   }
 
   return (
-    <Card className="p-6">
-      <div className="mb-4 flex items-center justify-between">
-        <div>
-          <h2 className="text-xl font-bold">{t[lang].satelliteMap}</h2>
-          <p className="text-sm text-muted-foreground">{fieldName}</p>
+    <div className="w-full">
+      {showControls && (
+        <div className="mb-4 flex flex-wrap gap-2">
+          <button
+            onClick={() => setMapCenter([30.0444, 31.2357])}
+            className="px-3 py-1 text-xs bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors"
+          >
+            Cairo
+          </button>
+          <button
+            onClick={() => setMapCenter([31.2001, 29.9187])}
+            className="px-3 py-1 text-xs bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors"
+          >
+            Alexandria
+          </button>
+          <button
+            onClick={() => setMapCenter([25.6872, 32.6396])}
+            className="px-3 py-1 text-xs bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors"
+          >
+            Luxor
+          </button>
+          <button
+            onClick={() => setMapCenter([26.8206, 30.8025])}
+            className="px-3 py-1 text-xs bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors"
+          >
+            Aswan
+          </button>
         </div>
-        <div className="text-right">
-          <p className="text-sm text-muted-foreground">{t[lang].ndvi}</p>
-          <p className="text-2xl font-bold text-primary">{(ndviValue * 100).toFixed(1)}%</p>
-        </div>
+      )}
+
+      <div 
+        className="rounded-xl overflow-hidden border border-primary/20 shadow-lg"
+        style={{ height }}
+      >
+        <MapContainer
+          center={mapCenter}
+          zoom={mapZoom}
+          style={{ height: "100%", width: "100%" }}
+          onClick={handleMapClick}
+        >
+          {/* Satellite Layer */}
+          <TileLayer
+            url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+            attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
+          />
+          
+          {/* Roads Layer */}
+          <TileLayer
+            url="https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}"
+            attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
+            opacity={0.7}
+          />
+
+          {/* Field Markers */}
+          {demoFields.map((field) => (
+            <Marker key={field.id} position={field.coordinates}>
+              <Popup>
+                <div className="p-2 min-w-[200px]">
+                  <h3 className="font-semibold text-lg mb-2">{field.name}</h3>
+                  <div className="space-y-1 text-sm">
+                    <p><span className="font-medium">Crop:</span> {field.crop}</p>
+                    <p><span className="font-medium">Area:</span> {field.area} hectares</p>
+                    <p><span className="font-medium">Health:</span> 
+                      <span className={`ml-1 ${getHealthColor(field.health)}`}>
+                        {field.health}% - {getHealthStatus(field.health)}
+                      </span>
+                    </p>
+                    <p><span className="font-medium">Last Update:</span> {field.lastUpdate}</p>
+                  </div>
+                  <div className="mt-3 flex gap-2">
+                    <button className="px-2 py-1 text-xs bg-primary text-white rounded hover:bg-primary/80 transition-colors">
+                      View Details
+                    </button>
+                    <button className="px-2 py-1 text-xs bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors">
+                      Analyze
+                    </button>
+                  </div>
+                </div>
+              </Popup>
+            </Marker>
+          ))}
+
+          {/* Selected Location Marker */}
+          {selectedLocation && (
+            <Marker position={selectedLocation}>
+              <Popup>
+                <div className="p-2">
+                  <h3 className="font-semibold mb-2">Selected Location</h3>
+                  <p className="text-sm">
+                    <span className="font-medium">Lat:</span> {selectedLocation[0].toFixed(6)}
+                  </p>
+                  <p className="text-sm">
+                    <span className="font-medium">Lng:</span> {selectedLocation[1].toFixed(6)}
+                  </p>
+                  <button 
+                    onClick={() => setSelectedLocation(null)}
+                    className="mt-2 px-2 py-1 text-xs bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+                  >
+                    Clear Selection
+                  </button>
+                </div>
+              </Popup>
+            </Marker>
+          )}
+        </MapContainer>
       </div>
 
-      <div className="relative mb-4 overflow-hidden rounded-lg bg-card">
-        <canvas ref={canvasRef} className="h-96 w-full" style={{ display: "block" }} />
-      </div>
-
-      <div className="grid gap-4 sm:grid-cols-3">
-        <div className="rounded-lg bg-card/50 p-3">
-          <p className="text-xs text-muted-foreground">{t[lang].coordinates}</p>
-          <p className="font-mono text-sm font-semibold">{latitude.toFixed(4)}°N</p>
-          <p className="font-mono text-sm font-semibold">{longitude.toFixed(4)}°E</p>
+      {/* Satellite Data Summary */}
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="glass-card p-4 rounded-xl">
+          <h3 className="font-semibold text-sm mb-2">Total Fields Monitored</h3>
+          <p className="text-2xl font-bold text-primary">{demoFields.length}</p>
         </div>
-        <div className="rounded-lg bg-card/50 p-3">
-          <p className="text-xs text-muted-foreground">{t[lang].health}</p>
-          <p className="text-sm font-semibold capitalize">{healthStatus}</p>
+        <div className="glass-card p-4 rounded-xl">
+          <h3 className="font-semibold text-sm mb-2">Average Health</h3>
+          <p className="text-2xl font-bold text-green-500">
+            {Math.round(demoFields.reduce((acc, field) => acc + field.health, 0) / demoFields.length)}%
+          </p>
         </div>
-        <div className="rounded-lg bg-card/50 p-3">
-          <p className="text-xs text-muted-foreground">Legend</p>
-          <div className="mt-1 flex gap-1">
-            <div className="h-3 w-3 rounded bg-red-500" />
-            <div className="h-3 w-3 rounded bg-yellow-500" />
-            <div className="h-3 w-3 rounded bg-green-500" />
-          </div>
+        <div className="glass-card p-4 rounded-xl">
+          <h3 className="font-semibold text-sm mb-2">Total Area</h3>
+          <p className="text-2xl font-bold text-blue-500">
+            {demoFields.reduce((acc, field) => acc + field.area, 0).toFixed(1)} ha
+          </p>
         </div>
       </div>
-    </Card>
+    </div>
   )
 }
