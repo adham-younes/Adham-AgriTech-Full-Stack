@@ -7,8 +7,8 @@ import { Suspense } from "react"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Adham AgriTech - منصة الزراعة الذكية",
-  description: "Smart Agriculture Platform for Egyptian Farmers - منصة الزراعة الذكية للمزارعين المصريين",
+  title: "Adham AgriTech - Smart Agriculture Platform",
+  description: "Smart Agriculture Platform for Farmers - Comprehensive farm management using AI, satellite technology, and blockchain",
   generator: "v0.app",
 }
 
@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="ar" dir="rtl" className="dark scroll-smooth">
+    <html lang="en" dir="ltr" className="dark scroll-smooth">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
       </head>
