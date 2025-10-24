@@ -1,11 +1,17 @@
+"use client"
+
 // ===========================================
 // Adham AgriTech - Feature Status Panel
 // ===========================================
 
 import React, { useState } from 'react';
-import { FeatureList, FeatureInfo } from '@/components/ui/feature-badge';
+import { FeatureInfo } from '@/components/ui/feature-badge';
 import { PLATFORM_FEATURES } from '@/lib/domain/types/feature-status';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { useFeatureAccess } from '@/lib/domain/hooks/useFeatureAccess';
+import { FEATURE_ENTITLEMENTS } from '@/lib/domain/types/billing';
+import { Badge } from '@/components/ui/badge';
+import { PaywallNotice } from '@/components/dashboard/paywall-notice';
 
 interface FeatureStatusPanelProps {
   className?: string;
@@ -17,6 +23,7 @@ export const FeatureStatusPanel: React.FC<FeatureStatusPanelProps> = ({
   const { t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
+  const { checkAccess } = useFeatureAccess();
 
   const categories = [
     { id: 'all', label: t('common.all') },
@@ -139,16 +146,49 @@ export const FeatureStatusPanel: React.FC<FeatureStatusPanelProps> = ({
 
       {/* قائمة الميزات */}
       <div className="space-y-4">
-        {filteredFeatures.map(feature => (
-          <div key={feature.id} className="border border-border rounded-lg p-4">
-            <FeatureInfo
-              featureId={feature.id}
-              showDescription={true}
-              showRequirements={true}
-              showLimitations={true}
-            />
-          </div>
-        ))}
+        {filteredFeatures.map(feature => {
+          const access = checkAccess(feature.id);
+          const entitlement = FEATURE_ENTITLEMENTS[feature.id];
+          const usageLimit = access.usageLimit;
+          const usage = access.usage;
+
+          return (
+            <div key={feature.id} className="border border-border rounded-lg p-4 space-y-4">
+              <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                <FeatureInfo
+                  featureId={feature.id}
+                  showDescription={true}
+                  showRequirements={true}
+                  showLimitations={true}
+                />
+                <div className="flex flex-col items-start gap-2 md:items-end">
+                  <Badge variant={access.enabled ? 'default' : 'outline'} className={access.enabled ? 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-300' : 'border-amber-400 text-amber-500'}>
+                    {access.enabled ? 'Included in plan' : `Requires ${entitlement?.availableOn?.slice(-1)[0] ?? 'upgrade'}`}
+                  </Badge>
+                  {usageLimit && (
+                    <span className="text-xs text-muted-foreground">
+                      Limit: {usageLimit.limit === 'unlimited' ? 'Unlimited' : `${usageLimit.limit} ${usageLimit.unit}`}
+                    </span>
+                  )}
+                  {usage && usage.limit !== undefined && (
+                    <span className="text-xs font-medium text-foreground">
+                      Used {usage.count}/{usage.limit} {usage.unit}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {!access.enabled && (
+                <PaywallNotice
+                  featureId={feature.id}
+                  requiredPlan={access.requiredPlan}
+                  upgradeHint={access.upgradeHint}
+                  className="mt-2"
+                />
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {filteredFeatures.length === 0 && (
