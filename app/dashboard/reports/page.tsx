@@ -5,7 +5,7 @@ import { createBrowserClient } from "@supabase/ssr"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Plus, Loader2, FileText, Download } from "lucide-react"
+import { Plus, Loader2, FileText, Download, BarChart3 } from "lucide-react"
 import Link from "next/link"
 
 export default function ReportsPage() {
@@ -95,6 +95,12 @@ export default function ReportsPage() {
           <Button variant="outline" size="sm" onClick={() => setLang(lang === "ar" ? "en" : "ar")}>
             {lang === "ar" ? "EN" : "ع"}
           </Button>
+          <Link href="/dashboard/reports/revenue">
+            <Button variant="outline" size="sm" className="gap-2">
+              <BarChart3 className="h-4 w-4" />
+              Revenue
+            </Button>
+          </Link>
           <Link href="/dashboard/reports/new">
             <Button className="gap-2">
               <Plus className="h-4 w-4" />
