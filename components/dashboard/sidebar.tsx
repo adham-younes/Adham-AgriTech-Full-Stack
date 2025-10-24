@@ -20,7 +20,11 @@ import {
   Activity,
   Satellite,
   Code,
+  Lock,
 } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import { ROUTE_FEATURE_MAP } from "@/lib/domain/types/billing"
+import { useFeatureAccess } from "@/lib/domain/hooks/useFeatureAccess"
 
 interface SidebarProps {
   user: any
@@ -49,6 +53,7 @@ const navigation = [
 
 export function DashboardSidebar({ user, profile }: SidebarProps) {
   const pathname = usePathname()
+  const { checkAccess } = useFeatureAccess()
 
   return (
     <aside className="flex w-full flex-col border-l bg-sidebar">
@@ -67,19 +72,33 @@ export function DashboardSidebar({ user, profile }: SidebarProps) {
       <nav className="flex-1 space-y-1 overflow-y-auto p-4">
         {navigation.map((item) => {
           const isActive = pathname === item.href
+          const featureId = ROUTE_FEATURE_MAP[item.href]
+          const access = featureId ? checkAccess(featureId) : { enabled: true }
+          const isLocked = featureId ? !access.enabled : false
+
           return (
             <Link
               key={item.href}
               href={item.href}
+              aria-disabled={isLocked}
               className={cn(
-                "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all",
+                "group flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-medium transition-all",
                 isActive
                   ? "bg-primary text-primary-foreground shadow-lg glow-primary"
                   : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-accent-foreground",
+                isLocked && !isActive && "opacity-60 hover:opacity-80",
               )}
             >
-              <item.icon className="h-5 w-5 flex-shrink-0" />
-              <span>{item.name}</span>
+              <span className="flex items-center gap-3">
+                <item.icon className="h-5 w-5 flex-shrink-0" />
+                <span>{item.name}</span>
+              </span>
+              {isLocked && (
+                <Badge variant="secondary" className="flex items-center gap-1 bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-200">
+                  <Lock className="h-3 w-3" />
+                  Upgrade
+                </Badge>
+              )}
             </Link>
           )
         })}

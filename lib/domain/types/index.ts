@@ -200,6 +200,8 @@ export interface ActionItem {
   completed_at?: string;
 }
 
+export * from "./billing"
+
 // ===== Report Domain =====
 export interface Report extends BaseEntity {
   user_id: string;
