@@ -19,6 +19,7 @@ import {
   Handshake,
   Activity,
   Satellite,
+  Code,
 } from "lucide-react"
 
 interface SidebarProps {
@@ -42,6 +43,7 @@ const navigation = [
   { name: "Forum", href: "/dashboard/forum", icon: Users },
   { name: "Services", href: "/dashboard/services", icon: Activity },
   { name: "Satellite", href: "/dashboard/satellite", icon: Satellite },
+  { name: "Features", href: "/dashboard/features", icon: Code },
   { name: "Partners", href: "/partners", icon: Handshake },
 ]
 
