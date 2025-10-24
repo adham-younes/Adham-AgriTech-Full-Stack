@@ -1,12 +1,38 @@
 {
-  "name": "my-v0-project",
-  "version": "0.1.0",
+  "name": "adham-agritech",
+  "version": "1.0.0",
+  "description": "Smart Agriculture Platform for Egyptian Farmers using AI, Satellite Technology, and Blockchain",
   "private": true,
+  "author": "Adham Louxor <adhamlouxor@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://adham-agritech.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/adham-agritech.git"
+  },
+  "keywords": [
+    "agriculture",
+    "farming",
+    "ai",
+    "satellite",
+    "blockchain",
+    "egypt",
+    "nextjs",
+    "typescript",
+    "supabase"
+  ],
   "scripts": {
     "build": "next build",
-    "dev": "next dev",
+    "dev": "next dev -p 3003",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start -p 3003",
+    "test": "node scripts/test-apis.js",
+    "activate": "./scripts/activate-services.sh",
+    "db:setup": "psql -h your-db-host -U postgres -d postgres -f scripts/000_create_functions.sql",
+    "db:reset": "psql -h your-db-host -U postgres -d postgres -f scripts/reset-database.sql",
+    "type-check": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
