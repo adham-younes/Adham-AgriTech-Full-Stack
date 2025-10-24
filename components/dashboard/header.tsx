@@ -37,7 +37,7 @@ export function DashboardHeader({ user, profile }: HeaderProps) {
       .toUpperCase() || "U"
 
   return (
-    <header className="flex h-14 sm:h-16 items-center justify-between border-b border-white/5 bg-black/40 backdrop-blur-xl px-3 sm:px-6 shadow-3d gap-3 sm:gap-4">
+    <header className="flex h-14 sm:h-16 items-center justify-between border-b border-white/5 bg-background/40 backdrop-blur-xl px-3 sm:px-6 shadow-3d gap-3 sm:gap-4">
       <MobileMenu user={user} profile={profile} />
 
       <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">

@@ -7,9 +7,9 @@ import LanguageToggle from "@/components/language-toggle"
 // Force redeploy trigger for DNS update
 export default function HomePage() {
   return (
-    <div className="flex min-h-screen flex-col bg-black">
+    <div className="flex min-h-screen flex-col bg-background">
       {/* Header with language toggle */}
-      <header className="sticky top-0 z-50 border-b border-primary/20 bg-black/80 backdrop-blur-xl px-4 sm:px-6 py-4">
+      <header className="sticky top-0 z-50 border-b border-primary/20 bg-background/80 backdrop-blur-xl px-4 sm:px-6 py-4">
         <div className="mx-auto max-w-7xl flex items-center justify-between">
           <div className="text-xl sm:text-2xl font-bold text-primary">Adham AgriTech</div>
           <LanguageToggle />
@@ -65,7 +65,7 @@ export default function HomePage() {
       </section>
 
       <section className="px-4 sm:px-6 py-12 sm:py-20 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-primary/5 to-black" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
         <div className="mx-auto max-w-6xl relative z-10">
           <div className="mb-12 sm:mb-16 text-center">
             <h2 className="mb-3 sm:mb-4 text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
@@ -120,7 +120,7 @@ export default function HomePage() {
       </section>
 
       <section className="px-4 sm:px-6 py-12 sm:py-20 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-primary/10 to-black" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/10 to-background" />
         <div className="mx-auto max-w-4xl text-center relative z-10">
           <div className="glass-card p-8 sm:p-12 rounded-3xl shadow-3d">
             <Zap className="h-12 w-12 sm:h-16 sm:w-16 text-primary mx-auto mb-4 sm:mb-6 drop-shadow-glow" />
@@ -144,7 +144,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <footer className="border-t border-primary/20 bg-black/50 backdrop-blur-xl px-4 sm:px-6 py-6 sm:py-8">
+      <footer className="border-t border-primary/20 bg-background/50 backdrop-blur-xl px-4 sm:px-6 py-6 sm:py-8">
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
             <p className="text-xs sm:text-sm text-gray-400">© 2025 Adham AgriTech. All rights reserved.</p>
