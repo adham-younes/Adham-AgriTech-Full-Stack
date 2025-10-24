@@ -1,6 +1,6 @@
 # 🔑 دليل شامل لجميع مفاتيح APIs في مشروع Adham AgriTech
 
-> *📅 آخر تحديث:* 23 أكتوبر 2025  
+> *📅 آخر تحديث:* 21 أكتوبر 2025  
 > *📧 البريد الإلكتروني:* adhamlouxor@gmail.com  
 > *🌐 النطاق المستهدف:* adham-agritech.com
 
@@ -22,17 +22,16 @@
 | الخدمة | الحالة | النوع | التكلفة | الأولوية |
 |--------|--------|-------|---------|----------|
 | *Supabase* | ✅ يعمل | قاعدة بيانات | مجاني | *حرج* |
-| *Google Earth Engine* | ❌ مطلوب | أقمار صناعية | مجاني | *حرج* |
-| *Copernicus* | ✅ مُكوّن | أقمار صناعية | مجاني | *عالي* |
+| *Copernicus* | ✅ يعمل | أقمار صناعية | مجاني | *حرج* |
+| *OpenAI* | ✅ يعمل | ذكاء اصطناعي | مدفوع | *عالي* |
 | *Infura* | ⚠ مكشوف | بلوكشين | مجاني | متوسط |
 | *Etherscan* | ⚠ مكشوف | مستكشف | مجاني | منخفض |
 | *OpenWeather* | ❌ مطلوب | طقس | مجاني | *عالي* |
-| *OpenAI* | ❌ مطلوب | ذكاء اصطناعي | مدفوع | *عالي* |
 
 *النتيجة:*
-- ✅ *يعمل بنجاح:* 1 خدمة
+- ✅ *يعمل بنجاح:* 3 خدمات
 - ⚠ *يعمل لكن يحتاج تأمين:* 2 خدمات  
-- ❌ *مطلوب فوراً:* 4 خدمات
+- ❌ *مطلوب فوراً:* 1 خدمة
 
 ---
 
@@ -69,7 +68,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzd
 
 ### 2️⃣ Copernicus - صور الأقمار الصناعية
 
-*الحالة:* ✅ *مُكوّن لكن غير مُفعّل*
+*الحالة:* ✅ *يعمل بنجاح 100%*
 
 ```env
 COPERNICUS_CLIENT_ID=74fafc7f-e08c-4683-8497-1e4ae9ed03e5
@@ -90,10 +89,8 @@ COPERNICUS_USERNAME=adhamlouxor@gmail.com
 - ✅ كشف التغييرات
 
 *API Endpoints:*
-```
-Token: https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token
-Data: https://catalogue.dataspace.copernicus.eu/odata/v1/Products
-```
+- Token: https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token
+- Data: https://catalogue.dataspace.copernicus.eu/odata/v1/Products
 
 *الروابط:*
 - Dashboard: https://dataspace.copernicus.eu
@@ -106,7 +103,35 @@ Data: https://catalogue.dataspace.copernicus.eu/odata/v1/Products
 
 ---
 
-### 3️⃣ Infura - شبكة Ethereum
+### 3️⃣ OpenAI - المساعد الذكي
+
+*الحالة:* ✅ *يعمل بنجاح 100%*
+
+```env
+OPENAI_API_KEY=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
+```
+
+*التفاصيل:*
+- *المزود:* OpenAI
+- *النماذج:* GPT-4o, GPT-4o-mini
+- *التكلفة:* $0.15/1M input, $0.60/1M output (GPT-4o-mini)
+
+*الاستخدامات:*
+- ✅ مساعد زراعي ذكي يجيب بالعربية
+- ✅ تشخيص أمراض النباتات من الصور
+- ✅ توصيات مخصصة للمحاصيل
+- ✅ تحليل التربة ونصائح الأسمدة
+
+*الروابط:*
+- Dashboard: https://platform.openai.com/api-keys
+- Docs: https://platform.openai.com/docs
+- Usage: https://platform.openai.com/usage
+
+*الأمان:* ✅ آمن - Service Account Key
+
+---
+
+### 4️⃣ Infura - شبكة Ethereum
 
 *الحالة:* ⚠ *يعمل لكن مكشوف - يحتاج تجديد*
 
@@ -132,15 +157,9 @@ NEXT_PUBLIC_MAINNET_RPC_URL=https://mainnet.infura.io/v3/c39b028e09be4c268110c1d
 
 *⚠ تحذير:* المفتاح مكشوف - يُنصح بتجديده قبل الإنتاج
 
-*كيفية التجديد:*
-1. https://infura.io/dashboard
-2. أنشئ مشروع جديد
-3. انسخ API Key الجديد
-4. استبدل في .env.local
-
 ---
 
-### 4️⃣ Etherscan - مستكشف البلوكشين
+### 5️⃣ Etherscan - مستكشف البلوكشين
 
 *الحالة:* ⚠ *يعمل لكن مكشوف - يحتاج تجديد*
 
@@ -159,11 +178,6 @@ NEXT_PUBLIC_ETHERSCAN_API_KEY=RKVSW4VI28GAW1VNZHQEC538Q1M9P2M49S
 - ✅ بيانات المحفظة
 - ✅ سعر Gas
 
-*API Example:*
-```
-https://api-sepolia.etherscan.io/api?module=account&action=balance&address=0xAff150d1F86D37c13b6b764f3F62569f4fE27c89&apikey=RKVSW4VI28GAW1VNZHQEC538Q1M9P2M49S
-```
-
 *الروابط:*
 - Explorer: https://sepolia.etherscan.io
 - API Keys: https://etherscan.io/myapikey
@@ -171,16 +185,11 @@ https://api-sepolia.etherscan.io/api?module=account&action=balance&address=0xAff
 
 *⚠ تحذير:* المفتاح مكشوف - يُنصح بتجديده
 
-*كيفية التجديد:*
-1. https://etherscan.io/myapikey
-2. أنشئ API Key جديد
-3. احذف القديم
-
 ---
 
 ## المفاتيح المطلوبة
 
-### 5️⃣ OpenWeather - بيانات الطقس
+### 6️⃣ OpenWeather - بيانات الطقس
 
 *الحالة:* ❌ *مطلوب فوراً*
 
@@ -205,11 +214,9 @@ OPENWEATHER_API_KEY=your-openweather-api-key-here  # ⚠ يحتاج استبدا
    - اذهب: https://openweathermap.org/api
    - اضغط "Sign Up"
    - املأ البيانات:
-     ```
-     Username: adham_agritech
-     Email: adhamlouxor@gmail.com
-     Password: (اختر كلمة مرور قوية)
-     ```
+     - Username: adham_agritech
+     - Email: adhamlouxor@gmail.com
+     - Password: (اختر كلمة مرور قوية)
 
 2. *تفعيل البريد:*
    - افتح adhamlouxor@gmail.com
@@ -241,117 +248,7 @@ OPENWEATHER_API_KEY=your-openweather-api-key-here  # ⚠ يحتاج استبدا
 
 ---
 
-### 6️⃣ OpenAI - المساعد الذكي
-
-*الحالة:* ❌ *مطلوب للميزات الذكية*
-
-```env
-OPENAI_API_KEY=your-openai-api-key-here  # ⚠ يحتاج استبدال
-```
-
-*لماذا مهم:*
-- مساعد زراعي ذكي يجيب بالعربية
-- تشخيص أمراض النباتات من الصور
-- توصيات مخصصة للمحاصيل
-- تحليل التربة ونصائح الأسمدة
-
-*النماذج:*
-- *GPT-4o-mini* (موصى به): $0.15/1M input, $0.60/1M output
-- GPT-4o (أقوى): $2.50/1M input, $10/1M output
-
-*التكلفة المتوقعة:*
-- 1000 محادثة/شهر ≈ $2-5
-- استخدام خفيف جداً مع GPT-4o-mini
-
-*كيفية الحصول عليه (10 دقائق):*
-
-1. *التسجيل:*
-   - اذهب: https://platform.openai.com/signup
-   - سجّل بـ adhamlouxor@gmail.com
-   - تحقق من البريد
-
-2. *إضافة رصيد:*
-   - اذهب: https://platform.openai.com/account/billing
-   - اضغط "Add payment method"
-   - أضف بطاقة ائتمان/خصم
-   - أضف $5-10 رصيد للبداية
-
-3. *إنشاء API Key:*
-   - اذهب: https://platform.openai.com/api-keys
-   - اضغط "+ Create new secret key"
-   - اسم المفتاح: "Adham AgriTech Production"
-   - انسخ المفتاح (يظهر مرة واحدة فقط!)
-
-4. *الإضافة للمشروع:*
-   ```bash
-   # افتح .env.local
-   # استبدل السطر:
-   OPENAI_API_KEY=sk-proj-xxxxxxxxxxxxxxxxx
-   
-   # أعد التشغيل
-   pnpm run dev
-   ```
-
-5. *ضبط الحدود (مهم!):*
-   - اذهب: https://platform.openai.com/account/limits
-   - اضبط Hard Limit: $10/شهر
-   - تفعيل إشعارات البريد عند 75%
-
-*الملف الجاهز:* app/api/ai-assistant/route.ts ينتظر المفتاح!
-
-*الأولوية:* 🟠 *عالية* - يميّز التطبيق عن المنافسين
-
----
-
-### 7️⃣ Google Earth Engine - أقمار صناعية متقدمة
-
-*الحالة:* ❌ *مطلوب للميزات المتقدمة*
-
-```env
-GOOGLE_EARTH_ENGINE_API_KEY=your-google-earth-engine-api-key-here
-```
-
-*لماذا مهم:*
-- صور أقمار صناعية عالية الدقة
-- تحليل NDVI وEVI متقدم
-- بيانات تاريخية شاملة
-- معالجة صور متطورة
-
-*الحد المجاني:*
-- 250,000 pixel requests/شهر
-- 1,000 requests/يوم
-- بدون بطاقة ائتمان
-
-*كيفية الحصول عليه (15 دقيقة):*
-
-1. *التسجيل:*
-   - اذهب: https://earthengine.google.com
-   - اضغط "Sign Up"
-   - سجّل بـ adhamlouxor@gmail.com
-
-2. *انتظار الموافقة:*
-   - قد يستغرق 1-3 أيام
-   - ستحصل على رسالة تأكيد
-
-3. *الحصول على API Key:*
-   - اذهب: https://code.earthengine.google.com
-   - اذهب إلى Settings > API Keys
-   - انسخ المفتاح
-
-4. *الإضافة للمشروع:*
-   ```bash
-   # افتح .env.local
-   # استبدل السطر:
-   GOOGLE_EARTH_ENGINE_API_KEY=المفتاح-الجديد-هنا
-   ```
-
-*الملف الجاهز:* lib/satellite/earth-engine.ts ينتظر المفتاح!
-
-*الأولوية:* 🟡 *متوسطة* - ميزة إضافية رائعة
-
----
-
-## 8️⃣ Ethereum Blockchain - إعدادات البلوكشين
+## 7️⃣ Ethereum Blockchain - إعدادات البلوكشين
 
 *الحالة:* ✅ *مُكوّن ويعمل (Testnet)*
 
@@ -377,19 +274,25 @@ NEXT_PUBLIC_CHAIN_ID=11155111
 - لا تستخدمها للأموال الحقيقية أبداً!
 - قبل الإنتاج: أنشئ محفظة جديدة في MetaMask
 
-*الحصول على Test ETH:*
-- Sepolia Faucet: https://sepoliafaucet.com
-- Google Faucet: https://cloud.google.com/application/web3/faucet/ethereum/sepolia
-
 ---
 
 ## خطوات الإعداد
 
-### ✅ الخطوة 1: التأكد من المفاتيح النشطة
+### ✅ الخطوة 1: اختبار المفاتيح النشطة
 
 ```bash
 # تحقق من Supabase
 curl https://mxnkwudqxtgduhenrgvm.supabase.co/rest/v1/
+
+# تحقق من OpenAI
+curl https://api.openai.com/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer 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" \
+  -d '{
+    "model": "gpt-4o-mini",
+    "messages": [{"role": "user", "content": "مرحباً"}],
+    "max_tokens": 50
+  }'
 
 # تحقق من Infura
 curl https://sepolia.infura.io/v3/c39b028e09be4c268110c1dcc81b3ebc \
@@ -417,48 +320,7 @@ OPENWEATHER_API_KEY=المفتاح-هنا
 curl "https://api.openweathermap.org/data/2.5/weather?q=Luxor,EG&appid=المفتاح-هنا&units=metric&lang=ar"
 ```
 
-### 🟠 الخطوة 3: الحصول على OpenAI API (10 دقائق)
-
-```bash
-# 1. سجّل في:
-https://platform.openai.com/signup
-
-# 2. أضف رصيد $5-10:
-https://platform.openai.com/account/billing
-
-# 3. أنشئ المفتاح:
-https://platform.openai.com/api-keys
-
-# 4. أضفه في .env.local:
-OPENAI_API_KEY=sk-proj-xxxxxxxxxxxx
-
-# 5. اختبر:
-curl https://api.openai.com/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer sk-proj-xxxx" \
-  -d '{
-    "model": "gpt-4o-mini",
-    "messages": [{"role": "user", "content": "مرحباً"}],
-    "max_tokens": 50
-  }'
-```
-
-### 🟡 الخطوة 4: الحصول على Google Earth Engine (15 دقيقة)
-
-```bash
-# 1. سجّل في:
-https://earthengine.google.com
-
-# 2. انتظر الموافقة (1-3 أيام)
-
-# 3. احصل على المفتاح من:
-https://code.earthengine.google.com
-
-# 4. أضفه في .env.local:
-GOOGLE_EARTH_ENGINE_API_KEY=المفتاح-هنا
-```
-
-### ⚠ الخطوة 5: تأمين المفاتيح المكشوفة (قبل الإنتاج)
+### ⚠ الخطوة 3: تأمين المفاتيح المكشوفة (قبل الإنتاج)
 
 ```bash
 # 1. جدّد Infura:
@@ -477,11 +339,10 @@ GOOGLE_EARTH_ENGINE_API_KEY=المفتاح-هنا
 # - لا تشاركه أبداً
 ```
 
-### ✅ الخطوة 6: اختبار كل شيء
+### ✅ الخطوة 4: اختبار كل شيء
 
 ```bash
 # شغّل المشروع
-cd /workspace
 pnpm run dev
 
 # افتح المتصفح:
@@ -489,56 +350,9 @@ http://localhost:3003
 
 # اختبر الصفحات:
 # - http://localhost:3003/dashboard/weather (يحتاج OpenWeather)
-# - http://localhost:3003/dashboard/ai-assistant (يحتاج OpenAI)
-# - http://localhost:3003/dashboard/fields (Google Earth Engine)
+# - http://localhost:3003/dashboard/ai-assistant (يعمل مع OpenAI)
+# - http://localhost:3003/dashboard/satellite (Copernicus)
 # - http://localhost:3003/dashboard/blockchain (Infura + Etherscan)
-```
-
----
-
-## 📁 ملف .env.local الكامل
-
-```env
-# ===========================================
-# Adham AgriTech - Environment Variables
-# ===========================================
-
-# ✅ Supabase (يعمل)
-NEXT_PUBLIC_SUPABASE_URL=https://mxnkwudqxtgduhenrgvm.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im14bmt3dWRxeHRnZHVoZW5yZ3ZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMzODkwMDUsImV4cCI6MjA2ODk2NTAwNX0.yVugFF3oc0aRry4UddG8pGdarX0iNUq6g_ZrZJdz3gc
-
-# ❌ OpenWeather (مطلوب!)
-OPENWEATHER_API_KEY=your-openweather-api-key-here
-
-# ❌ OpenAI (مطلوب!)
-OPENAI_API_KEY=your-openai-api-key-here
-
-# ❌ Google Earth Engine (مطلوب!)
-GOOGLE_EARTH_ENGINE_API_KEY=your-google-earth-engine-api-key-here
-
-# ✅ Copernicus (مُكوّن)
-COPERNICUS_CLIENT_ID=74fafc7f-e08c-4683-8497-1e4ae9ed03e5
-COPERNICUS_CLIENT_SECRET=dcf68544-20e4-453f-ash-79597e4c-b1bf-467b-98d6-0ccab5a6ac54
-COPERNICUS_USERNAME=adhamlouxor@gmail.com
-
-# ⚠ Infura (يعمل لكن مكشوف)
-NEXT_PUBLIC_INFURA_API_KEY=c39b028e09be4c268110c1dcc81b3ebc
-NEXT_PUBLIC_SEPOLIA_RPC_URL=https://sepolia.infura.io/v3/c39b028e09be4c268110c1dcc81b3ebc
-NEXT_PUBLIC_MAINNET_RPC_URL=https://mainnet.infura.io/v3/c39b028e09be4c268110c1dcc81b3ebc
-
-# ⚠ Etherscan (يعمل لكن مكشوف)
-NEXT_PUBLIC_ETHERSCAN_API_KEY=RKVSW4VI28GAW1VNZHQEC538Q1M9P2M49S
-
-# ✅ Blockchain (مُكوّن)
-NEXT_PUBLIC_CONTRACT_ADDRESS=0xda22c4a3691D42A8989822BC49Ec36CE3D577DfA
-NEXT_PUBLIC_WALLET_ADDRESS=0xAff150d1F86D37c13b6b764f3F62569f4fE27c89
-NEXT_PUBLIC_NETWORK=sepolia
-NEXT_PUBLIC_CHAIN_ID=11155111
-
-# General
-EMAIL=adhamlouxor@gmail.com
-NODE_ENV=development
-NEXT_PUBLIC_APP_URL=http://localhost:3003
 ```
 
 ---
@@ -546,13 +360,12 @@ NEXT_PUBLIC_APP_URL=http://localhost:3003
 ## 🎯 قائمة المهام
 
 ### فوري (اليوم):
-- [ ] الحصول على OpenWeather API Key
-- [ ] الحصول على OpenAI API Key
+- [x] ✅ OpenAI API Key (تم إضافته!)
+- [ ] 🔴 الحصول على OpenWeather API Key
 - [ ] اختبار صفحة الطقس
 - [ ] اختبار المساعد الذكي
 
 ### قريباً (قبل الإنتاج):
-- [ ] الحصول على Google Earth Engine API Key
 - [ ] تجديد Infura API Key
 - [ ] تجديد Etherscan API Key
 - [ ] إنشاء محفظة Ethereum جديدة
@@ -598,10 +411,9 @@ NEXT_PUBLIC_APP_URL=http://localhost:3003
 1. *Supabase:* https://supabase.com/dashboard/project/mxnkwudqxtgduhenrgvm/settings/support
 2. *OpenWeather:* https://openweathermap.org/faq
 3. *OpenAI:* https://help.openai.com/
-4. *Google Earth Engine:* https://developers.google.com/earth-engine/help
-5. *Copernicus:* https://forum.dataspace.copernicus.eu/
-6. *Infura:* https://support.infura.io/
-7. *Etherscan:* https://etherscan.io/contactus
+4. *Copernicus:* https://forum.dataspace.copernicus.eu/
+5. *Infura:* https://support.infura.io/
+6. *Etherscan:* https://etherscan.io/contactus
 
 ---
 
@@ -609,8 +421,12 @@ NEXT_PUBLIC_APP_URL=http://localhost:3003
 
 قبل النشر للإنتاج، تأكد من:
 
-- [ ] جميع المفاتيح صالحة وتعمل
-- [ ] تم تجديد المفاتيح المكشوفة
+- [x] ✅ OpenAI API Key يعمل
+- [x] ✅ Supabase يعمل
+- [x] ✅ Copernicus يعمل
+- [ ] 🔴 OpenWeather API Key
+- [ ] ⚠ تجديد Infura API Key
+- [ ] ⚠ تجديد Etherscan API Key
 - [ ] .env.local في .gitignore
 - [ ] تم اختبار جميع الصفحات
 - [ ] تم ضبط حدود الاستخدام
@@ -621,4 +437,4 @@ NEXT_PUBLIC_APP_URL=http://localhost:3003
 
 *🎉 بالتوفيق في مشروع Adham AgriTech!*
 
-> آخر تحديث: 23 أكتوبر 2025 - الساعة 08:15 صباحاً
+> آخر تحديث: 21 أكتوبر 2025 - الساعة 05:00 صباحاً
