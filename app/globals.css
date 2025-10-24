@@ -126,7 +126,7 @@
   }
 }
 
-/* Added 3D depth effects and animations */
+/* Added 3D depth effects, animations, and fixed missing closing braces */
 @layer utilities {
   .glass-card {
     @apply backdrop-blur-xl bg-card/50 border border-border/50;
@@ -156,5 +156,80 @@
   .hover-lift:hover {
     transform: translateY(-4px) scale(1.02);
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4), 0 0 60px -15px oklch(0.65 0.22 145 / 0.3);
+  }
+
+  /* Added slide animations for modals and drawers */
+  @keyframes slide-in-from-bottom {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-out-to-bottom {
+    from {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+  }
+
+  @keyframes slide-in-from-left {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-out-to-left {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+  }
+
+  .slide-in-from-bottom {
+    animation: slide-in-from-bottom 0.3s ease-out;
+  }
+
+  .slide-out-to-bottom {
+    animation: slide-out-to-bottom 0.3s ease-in;
+  }
+
+  .slide-in-from-left {
+    animation: slide-in-from-left 0.3s ease-out;
+  }
+
+  .slide-out-to-left {
+    animation: slide-out-to-left 0.3s ease-in;
+  }
+
+  /* Added running animation for loading states */
+  @keyframes running {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 100% 0;
+    }
+  }
+
+  .running {
+    animation: running 1s linear infinite;
   }
 }
