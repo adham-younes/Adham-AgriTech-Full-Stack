@@ -1,8 +1,30 @@
 import type React from "react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { Sprout, Leaf, Droplets, Cloud, BarChart3, MessageSquare, Sparkles, Shield, Zap } from "lucide-react"
+import {
+  Sprout,
+  Leaf,
+  Droplets,
+  Cloud,
+  BarChart3,
+  MessageSquare,
+  Sparkles,
+  Shield,
+  Zap,
+  Smartphone,
+  Satellite,
+  Globe,
+  BrainCircuit,
+  ArrowUpRight,
+  ShoppingCart,
+  Layers,
+  Workflow,
+  ShieldCheck,
+  Cpu,
+  BookOpen,
+} from "lucide-react"
 import LanguageToggle from "@/components/language-toggle"
+import { BetaSignupForm } from "@/components/beta-signup-form"
 
 // Force redeploy trigger for DNS update
 export default function HomePage() {
@@ -10,9 +32,38 @@ export default function HomePage() {
     <div className="flex min-h-screen flex-col bg-background">
       {/* Header with language toggle */}
       <header className="sticky top-0 z-50 border-b border-primary/20 bg-background/80 backdrop-blur-xl px-4 sm:px-6 py-4">
-        <div className="mx-auto max-w-7xl flex items-center justify-between">
-          <div className="text-xl sm:text-2xl font-bold text-primary">Adham AgriTech</div>
-          <LanguageToggle />
+        <div className="mx-auto max-w-7xl flex items-center justify-between gap-4">
+          <div className="flex items-center gap-6">
+            <div className="text-xl sm:text-2xl font-bold text-primary">Adham AgriTech</div>
+            <nav className="hidden md:flex items-center gap-5 text-sm text-gray-300">
+              <Link href="/dashboard" className="hover:text-white transition-colors">
+                Platform
+              </Link>
+              <Link href="/marketplace" className="hover:text-white transition-colors">
+                Marketplace
+              </Link>
+              <Link href="/docs" className="hover:text-white transition-colors">
+                Knowledge
+              </Link>
+              <Link href="/dashboard/satellite" className="hover:text-white transition-colors">
+                Satellites
+              </Link>
+              <Link href="/ops/deployments" className="hover:text-white transition-colors">
+                Ops Center
+              </Link>
+            </nav>
+          </div>
+          <div className="flex items-center gap-3">
+            <Button
+              asChild
+              size="sm"
+              variant="outline"
+              className="glass-card border-primary/30 bg-transparent text-xs sm:text-sm"
+            >
+              <Link href="/marketplace">Global Inputs</Link>
+            </Button>
+            <LanguageToggle />
+          </div>
         </div>
       </header>
 
@@ -108,6 +159,179 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="relative overflow-hidden px-4 sm:px-6 py-12 sm:py-20">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(34,197,94,0.18),transparent_55%)]" />
+        <div className="absolute inset-y-0 left-1/2 w-px bg-gradient-to-b from-transparent via-primary/40 to-transparent opacity-60" />
+        <div className="relative z-10 mx-auto max-w-6xl">
+          <div className="mb-12 sm:mb-16 text-center">
+            <p className="mx-auto mb-3 sm:mb-4 w-fit rounded-full border border-primary/30 bg-primary/10 px-4 py-1 text-xs sm:text-sm uppercase tracking-[0.3em] text-primary">
+              Global Vision 2025
+            </p>
+            <h2 className="mb-4 text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
+              Towards a Planet-Scale Agritech Companion
+            </h2>
+            <p className="text-base sm:text-lg text-gray-400 max-w-3xl mx-auto">
+              We are scaling Adham AgriTech into a holistic service that mirrors the Agrio experience—combining immersive design, AI copilots, and orbital intelligence with actionable agronomy guidance in every language.
+            </p>
+          </div>
+          <div className="grid gap-6 sm:gap-8 lg:grid-cols-3">
+            <FutureCard
+              icon={<Smartphone className="h-6 w-6 sm:h-8 sm:w-8" />}
+              title="AI Mobile Lab"
+              description="Capture plant diseases with guided camera workflows, instant edge inference, and offline-first syncing."
+              highlights={[
+                "Augmented reality framing for leaf, fruit, and canopy scans",
+                "Disease diagnostics trained on regional crop datasets",
+                "Prescription reports that sync back to farmer dashboards",
+              ]}
+            />
+            <FutureCard
+              icon={<Satellite className="h-6 w-6 sm:h-8 sm:w-8" />}
+              title="Orbital Intelligence"
+              description="Fuse high-resolution satellite feeds, NDVI, and chlorophyll analytics into live agronomic alerts."
+              highlights={[
+                "Daily NDVI/NDWI composites with anomaly detection",
+                "True-color and infrared layers delivered inside interactive 3D maps",
+                "Soil moisture and fertigation forecasting via physics-informed AI",
+              ]}
+            />
+            <FutureCard
+              icon={<Globe className="h-6 w-6 sm:h-8 sm:w-8" />}
+              title="Global Cooperative"
+              description="Launch localized agronomy marketplaces, multilingual coaches, and verified input supply chains."
+              highlights={[
+                "Geo-routed agronomists and extension officers for live support",
+                "Tokenized traceability for produce and regenerative credits",
+                "Localized playbooks co-created with farmer communities",
+              ]}
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="relative px-4 sm:px-6 py-12 sm:py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-background to-primary/5" />
+        <div className="relative z-10 mx-auto max-w-6xl">
+          <div className="mb-10 sm:mb-14 text-center">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
+              Commerce rails for a planetary farm supply chain
+            </h2>
+            <p className="mx-auto mt-4 max-w-3xl text-sm sm:text-base text-gray-400">
+              Build an e-commerce spine that fuses Alibaba, Amazon Business, and local cooperatives. Real-time catalogues, fulfilment telemetry, and localized payments keep every grower connected to trusted inputs.
+            </p>
+          </div>
+          <div className="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <GuidelineCard
+              icon={<ShoppingCart className="h-7 w-7" />}
+              title="Unified procurement"
+              description="A single buying lane orchestrates seeds, fertigation rigs, biologicals, and hardware with transparent landed costs."
+              points={["Streamlined checkout across Alibaba + Amazon", "Automated shipping & customs documents", "Traceable sourcing via blockchain credentials"]}
+            />
+            <GuidelineCard
+              icon={<Layers className="h-7 w-7" />}
+              title="Composable APIs"
+              description="Modular adapters normalize price, availability, and compliance metadata before surfacing it to dashboards and mobile apps."
+              points={["Background cron sync keeps SKUs fresh", "Webhook relays update ERP and cooperative stores", "Localized tax & subsidy rules pluggable per region"]}
+            />
+            <GuidelineCard
+              icon={<Workflow className="h-7 w-7" />}
+              title="Logistics intelligence"
+              description="Live telemetry blends courier events with farm geofences to forecast delivery windows and cold-chain risks."
+              points={["Predictive ETAs with satellite weather overlays", "Incident routing to agronomists + farmers", "SMS/WhatsApp nudges for approvals and payments"]}
+            />
+          </div>
+          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Button asChild size="lg" className="shadow-3d shadow-primary/50 hover:shadow-primary/70">
+              <Link href="/marketplace">
+                Launch Marketplace
+                <ArrowUpRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+            <p className="text-xs sm:text-sm text-primary/70">
+              Auto-deploys on Vercel — connect API keys via environment variables to go live instantly.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="relative px-4 sm:px-6 py-12 sm:py-20">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-background to-primary/5" />
+        <div className="relative z-10 mx-auto max-w-6xl">
+          <div className="glass-card overflow-hidden rounded-3xl border border-primary/20 px-6 py-8 sm:px-10 sm:py-12 shadow-3d transition-all duration-300 hover:shadow-3d-lg">
+            <div className="grid gap-8 lg:grid-cols-[1.15fr,0.85fr] lg:items-start">
+              <div className="space-y-5 sm:space-y-6 text-center lg:text-left">
+                <div className="mx-auto lg:mx-0 flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-primary/20 text-primary shadow-inner">
+                  <BrainCircuit className="h-7 w-7 sm:h-9 sm:w-9" />
+                </div>
+                <div className="space-y-4">
+                  <h3 className="text-2xl sm:text-3xl font-semibold text-white">
+                    Mobile Diagnostic Studio — Beta Launch
+                  </h3>
+                  <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
+                    We are prototyping a smartphone app that pairs camera-based disease detection, soil nutrient scans, and satellite overlays into a single immersive 3D control center. Join the beta to co-create the future of agronomy intelligence.
+                  </p>
+                  <div className="grid gap-3 text-left sm:grid-cols-2 text-xs sm:text-sm text-primary/80">
+                    <div className="glass-card rounded-2xl border border-primary/30 bg-primary/5 p-3">
+                      <p className="font-semibold text-white/90">Edge AI toolkit</p>
+                      <p className="mt-1 text-primary/70">Offline CNN inference, AR-guided framing, rapid sharepacks.</p>
+                    </div>
+                    <div className="glass-card rounded-2xl border border-primary/30 bg-primary/5 p-3">
+                      <p className="font-semibold text-white/90">Orbital sync</p>
+                      <p className="mt-1 text-primary/70">NDVI, NDWI, and chlorophyll overlays stream to scouting missions.</p>
+                    </div>
+                    <div className="glass-card rounded-2xl border border-primary/30 bg-primary/5 p-3">
+                      <p className="font-semibold text-white/90">Collaborative triage</p>
+                      <p className="mt-1 text-primary/70">Agronomist huddles, case history timelines, bilingual support.</p>
+                    </div>
+                    <div className="glass-card rounded-2xl border border-primary/30 bg-primary/5 p-3">
+                      <p className="font-semibold text-white/90">Geospatial insights</p>
+                      <p className="mt-1 text-primary/70">Soil, canopy, and fertigation anomalies surfaced in 3D terrain.</p>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 text-xs sm:text-sm text-primary/80">
+                    <span className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1">NDVI & Chlorophyll Live Layers</span>
+                    <span className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1">Guided Field Scouting</span>
+                    <span className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1">Offline Agronomist Chat</span>
+                  </div>
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="lg"
+                    className="glass-card border-primary/30 hover:border-primary/60 hover:scale-105 transition-all duration-300 bg-transparent"
+                  >
+                    <Link href="/dashboard/insights">
+                      Learn More
+                      <ArrowUpRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+              <div className="flex flex-col items-stretch gap-5">
+                <div className="mx-auto flex w-full max-w-[11rem] sm:max-w-[14rem] justify-center">
+                  <div className="relative">
+                    <div className="absolute inset-0 rounded-3xl bg-primary/20 blur-2xl opacity-70" />
+                    <div className="relative flex h-40 w-24 sm:h-48 sm:w-28 items-end justify-center rounded-[2rem] border border-primary/30 bg-gradient-to-br from-black via-primary/10 to-black p-4 shadow-3d">
+                      <div className="h-full w-full rounded-[1.5rem] bg-black/80 p-3">
+                        <div className="flex h-full flex-col justify-between rounded-2xl bg-gradient-to-b from-primary/20 via-black/70 to-black p-4 text-left text-xs text-gray-300">
+                          <p className="font-semibold text-white/90">Field Scan</p>
+                          <div className="space-y-1 text-[0.65rem]">
+                            <p>• Capture leaf imagery</p>
+                            <p>• Auto-detect stress zones</p>
+                            <p>• Sync with satellite feed</p>
+                          </div>
+                          <p className="text-[0.65rem] text-primary/80">Realtime recommendations</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <BetaSignupForm />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="px-4 sm:px-6 py-12 sm:py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-emerald-500/10 to-primary/10" />
         <div className="mx-auto max-w-6xl relative z-10">
@@ -115,6 +339,40 @@ export default function HomePage() {
             <StatCard number="10,000+" label="Active Farms" />
             <StatCard number="50,000+" label="Hectares Managed" />
             <StatCard number="30%" label="Productivity Increase" />
+          </div>
+        </div>
+      </section>
+
+      <section className="relative px-4 sm:px-6 py-12 sm:py-20">
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
+        <div className="relative z-10 mx-auto max-w-6xl">
+          <div className="mb-10 text-center">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
+              Engineering playbook inspired by global agritech leaders
+            </h2>
+            <p className="mx-auto mt-4 max-w-3xl text-sm sm:text-base text-gray-400">
+              Synthesize the winning moves from Agrio, FarmLogs, Climate FieldView, Taranis, CropIn, AgroStar, and the wider top-10 smart farming apps into Adham AgriTech’s architecture.
+            </p>
+          </div>
+          <div className="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <GuidelineCard
+              icon={<ShieldCheck className="h-7 w-7" />}
+              title="Security & trust"
+              description="Zero-trust auth, farmer identity wallets, and on-chain traceability mirror enterprise-grade agrifood platforms."
+              points={["Implement OAuth2 + passkeys with device attestations", "Immutable audit trails for crop treatments & subsidies", "Regional data residency with field-level encryption"]}
+            />
+            <GuidelineCard
+              icon={<Cpu className="h-7 w-7" />}
+              title="AI-first agronomy"
+              description="Deploy transformers for disease triage, diffusion models for canopy simulation, and physics-informed NDVI engines."
+              points={["On-device inference via TensorFlow Lite & Core ML", "Server-side fine-tuning with active learning loops", "Satellite + drone fusion pipelines with QA automation"]}
+            />
+            <GuidelineCard
+              icon={<BookOpen className="h-7 w-7" />}
+              title="Education & community"
+              description="Combine multilingual academies, farmer social hubs, and expert livestreams to elevate agronomic literacy."
+              points={["Micro-learning capsules aligned with crop cycles", "In-app translation and voice guidance for 20+ languages", "Regional success stories powering community trust"]}
+            />
           </div>
         </div>
       </section>
@@ -174,6 +432,73 @@ function FeatureCard({
       </div>
       <h3 className="mb-2 text-lg sm:text-xl font-semibold text-white">{title}</h3>
       <p className="text-sm sm:text-base text-gray-400 leading-relaxed">{description}</p>
+    </div>
+  )
+}
+
+function GuidelineCard({
+  icon,
+  title,
+  description,
+  points,
+}: {
+  icon: React.ReactNode
+  title: string
+  description: string
+  points: string[]
+}) {
+  return (
+    <div className="glass-card flex h-full flex-col gap-4 rounded-2xl border border-primary/20 bg-black/40 p-6 shadow-3d">
+      <div className="flex items-center gap-3 text-primary">
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/15 text-primary shadow-inner">
+          {icon}
+        </div>
+        <h3 className="text-lg font-semibold text-white">{title}</h3>
+      </div>
+      <p className="text-sm text-gray-400 leading-relaxed">{description}</p>
+      <ul className="mt-auto list-disc space-y-1 pl-5 text-xs text-primary/70">
+        {points.map((point) => (
+          <li key={point}>{point}</li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+function FutureCard({
+  icon,
+  title,
+  description,
+  highlights,
+}: {
+  icon: React.ReactNode
+  title: string
+  description: string
+  highlights: string[]
+}) {
+  return (
+    <div className="group relative">
+      <div className="absolute inset-0 rounded-3xl bg-primary/30 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-60" />
+      <div className="relative glass-card h-full overflow-hidden rounded-3xl border border-primary/20 p-6 sm:p-8 shadow-3d transition-all duration-500 transform-gpu group-hover:-translate-y-2 group-hover:rotate-[0.75deg] group-hover:scale-[1.02]">
+        <div className="flex items-center justify-between">
+          <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-2xl bg-primary/20 text-primary shadow-inner">
+            {icon}
+          </div>
+          <span className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-[0.65rem] uppercase tracking-[0.3em] text-primary/80">
+            Vision
+          </span>
+        </div>
+        <h3 className="mt-6 text-xl sm:text-2xl font-semibold text-white">{title}</h3>
+        <p className="mt-3 text-sm sm:text-base text-gray-400 leading-relaxed">{description}</p>
+        <ul className="mt-6 space-y-3 text-left text-sm sm:text-base text-gray-300">
+          {highlights.map((highlight) => (
+            <li key={highlight} className="flex items-start gap-3">
+              <span className="mt-1 h-2 w-2 rounded-full bg-primary/70" aria-hidden />
+              <span>{highlight}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   )
 }

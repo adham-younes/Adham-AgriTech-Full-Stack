@@ -1,128 +1,64 @@
-# 🚀 تقرير حالة النشر النهائي
+# 🚦 Deployment Status – 4 February 2025
 
-> **تاريخ النشر:** 21 أكتوبر 2025  
-> **الوقت:** 06:00 صباحاً  
-> **النطاق:** https://www.adham-agritech.com
+This report captures the current publication state from inside the development container. The focus is on verifying whether the latest local changes have reached the live Vercel environment and identifying anything blocking that flow.
 
----
+## 1. Source control linkage
 
-## ✅ **حالة النشر**
+- **Git remotes:** _Not configured_. Running `git remote -v` returns no entries, so the container cannot push updates to GitHub from here.
+- **Action required:** add the production repository, for example `git remote add origin git@github.com:<org>/<repo>.git`, then push the desired branch.
 
-### 🎯 **تم بنجاح:**
-- ✅ **البناء (Build):** نجح بدون أخطاء
-- ✅ **الرفع (Push):** تم رفع جميع التحديثات إلى GitHub
-- ✅ **النشر (Deploy):** Vercel يحدث النطاق تلقائياً
-- ✅ **التحقق:** النطاق يعمل ويستجيب
+## 2. Automated Vercel checks
 
-### 📊 **إحصائيات البناء:**
+| Command | Result |
+| --- | --- |
+| `pnpm vercel:status` | ❌ Fails – `[vercel] Missing access token. Provide --token or set VERCEL_TOKEN.` |
+
+The status inspector is operational, but it needs a valid `VERCEL_TOKEN` plus `VERCEL_PROJECT`/`VERCEL_PROJECT_ID` in the environment before it can reach the Vercel API.
+
+## 3. Readiness scan
+
+A new helper script is available to surface all prerequisites in one pass:
+
+```bash
+pnpm vercel:check
 ```
-Route (app)                                 Size  First Load JS
-├ ○ /                                    1.46 kB         113 kB
-├ ƒ /dashboard/features                  3.78 kB         104 kB
-├ ƒ /dashboard/satellite                 3.94 kB         158 kB
-├ ƒ /dashboard/ai-assistant              4.28 kB         160 kB
-└ ... (37 routes total)
+
+Sample output from this workspace:
+
+```
+Vercel deployment readiness report:
+
+❌ VERCEL_TOKEN
+   Vercel access token
+   Missing environment variable.
+
+❌ VERCEL_PROJECT / VERCEL_PROJECT_ID
+   Vercel project identifier (set VERCEL_PROJECT or VERCEL_PROJECT_ID)
+   Provide one of the identifiers so the deployment scripts can target the correct project.
+
+⚠️ VERCEL_TEAM_ID
+   Vercel team ID
+   Optional variable is missing; set it if the project belongs to a Vercel team.
+
+⚠️ git remote
+   Connected Git remotes
+   No git remotes configured. Add the GitHub repository before attempting to push updates.
+
+Summary: 0 passed, 2 warnings, 2 failed checks.
+Resolve failed checks before attempting to trigger or monitor production deployments.
 ```
 
----
+## 4. Next steps to publish
 
-## 🏗️ **التحسينات المطبقة**
+1. Configure Git remotes and push the current branch (استخدم `pnpm git:sync` لتوصيل المستودع تلقائيًا عندما يتوفر عنوان HTTPS مرفق برمز الوصول).
+2. Export Vercel credentials in the terminal (or add them to your CI secrets):
+   ```bash
+   export VERCEL_TOKEN=... # personal access token with read+deploy scopes
+   export VERCEL_PROJECT=adham-agritech
+   # export VERCEL_TEAM_ID=team_... (only when using a team account)
+   ```
+3. Re-run `pnpm vercel:check` until all checks pass.
+4. Inspect deployment history with `pnpm vercel:status --prod`.
+5. Trigger a publish if needed via `pnpm vercel:deploy --target production` أو النشر المباشر باستخدام `pnpm vercel:deploy:direct --skip-build` عند تجهيز المخرجات محليًا.
 
-### 1️⃣ **طبقة النطاق (Domain Layer)**
-- ✅ `lib/domain/services/` - خدمات الأعمال
-- ✅ `lib/domain/types/` - أنواع TypeScript مشتركة
-- ✅ `lib/domain/hooks/` - Hooks قابلة لإعادة الاستخدام
-
-### 2️⃣ **خدمات البيانات الخارجية**
-- ✅ `WeatherService` - بيانات الطقس مع التخزين المؤقت
-- ✅ `SatelliteService` - صور الأقمار الصناعية و NDVI
-- ✅ `AIStrategyService` - توصيات الذكاء الاصطناعي
-- ✅ `WaterCalculationService` - حسابات الري الذكية
-
-### 3️⃣ **نظام i18n مركزي**
-- ✅ `lib/i18n/locales/ar.json` - الترجمة العربية
-- ✅ `lib/i18n/locales/en.json` - الترجمة الإنجليزية
-- ✅ `useTranslation` hook - إدارة الترجمة
-
-### 4️⃣ **إدارة حالة الميزات**
-- ✅ `FeatureBadge` - تمييز MVP/Beta/Alpha
-- ✅ `FeatureStatusPanel` - لوحة تتبع الميزات
-- ✅ `/dashboard/features` - صفحة حالة الميزات
-
-### 5️⃣ **مكونات UX محسنة**
-- ✅ فصل منطق الأعمال عن العرض
-- ✅ معالجة أخطاء شاملة
-- ✅ تحميل ذكي مع التخزين المؤقت
-
----
-
-## 🔧 **APIs الحالية**
-
-| الخدمة | الحالة | النسبة |
-|--------|--------|--------|
-| **Supabase** | ✅ يعمل | 100% |
-| **OpenAI** | ✅ يعمل | 100% |
-| **Infura** | ✅ يعمل | 100% |
-| **Mapbox** | ✅ يعمل | 100% |
-| **OpenWeather** | ✅ يعمل | 100% |
-| **Etherscan** | ⚠️ V1 | 80% |
-
-**إجمالي:** 83% (5/6 APIs تعمل بالكامل)
-
----
-
-## 🌐 **الصفحات الجديدة**
-
-### `/dashboard/features`
-- 📊 لوحة تتبع حالة الميزات
-- 🏷️ تمييز Production/Beta/Alpha
-- 📈 إحصائيات شاملة
-- 🔍 فلاتر متقدمة
-
-### `/dashboard/satellite`
-- 🛰️ خرائط الأقمار الصناعية
-- 🌱 تحليل NDVI
-- 📍 تتبع الحقول
-- 🔄 تحديث تلقائي
-
----
-
-## ⚠️ **تحذيرات البناء**
-
-1. **Supabase Edge Runtime:** تحذيرات بسيطة (لا تؤثر على الوظائف)
-2. **Webpack Cache:** تحذير أداء (لا يؤثر على المستخدمين)
-3. **useChat:** تم إصلاحه مؤقتاً
-
-**جميع التحذيرات غير حرجة ولا تؤثر على الوظائف!**
-
----
-
-## 🎯 **النتيجة النهائية**
-
-### ✅ **تم بنجاح:**
-- 🏗️ **هيكل محسن** - فصل طبقات واضح
-- 🌐 **ترجمة مركزية** - دعم كامل للعربية والإنجليزية
-- 🏷️ **تتبع الميزات** - وضوح تام لحالة كل ميزة
-- 🔧 **خدمات متقدمة** - APIs محسنة مع تخزين مؤقت
-- 📱 **UX محسن** - تجربة مستخدم أفضل
-
-### 🚀 **جاهز للإنتاج:**
-- ✅ **البناء:** نجح بدون أخطاء
-- ✅ **النشر:** تم رفع التحديثات
-- ✅ **الاختبار:** جميع APIs تعمل
-- ✅ **الوثائق:** شاملة ومفصلة
-
----
-
-## 📞 **الخطوات التالية**
-
-1. **مراقبة الأداء** - تتبع استخدام APIs
-2. **جمع التغذية الراجعة** - من المستخدمين
-3. **تحسينات إضافية** - بناءً على الاستخدام
-4. **توسيع الميزات** - إضافة وظائف جديدة
-
----
-
-**🎉 المنصة جاهزة للاستخدام مع تحسينات هيكلية شاملة!**
-
-> آخر تحديث: 21 أكتوبر 2025 - الساعة 06:00 صباحاً
+Until these credentials and remotes are supplied, the container cannot confirm or push any deployment to the live domain.
