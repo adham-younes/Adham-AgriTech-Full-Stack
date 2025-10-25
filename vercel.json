@@ -3,6 +3,12 @@
   "comment": "Forcing Vercel to re-evaluate configuration", // This is a temporary comment
   "name": "adham-agritech",
   "alias": ["adham-agritech.com", "www.adham-agritech.com"],
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
   "routes": [
     {
       "src": "/api/(.*)",
@@ -22,11 +28,6 @@
     "NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN": "@mapbox_access_token",
     "INFURA_PROJECT_ID": "@infura_project_id",
     "ETHERSCAN_API_KEY": "@etherscan_api_key"
-  },
-  "functions": {
-    "app/api/**/*.ts": {
-      "maxDuration": 30
-    }
   },
   "headers": [
     {
