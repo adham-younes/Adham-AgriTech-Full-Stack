@@ -21,7 +21,7 @@ export default function NewFarmPage() {
     name: "",
     description: "",
     location: "",
-    total_area: "",
+    area: "",
     latitude: "",
     longitude: "",
   })
@@ -83,11 +83,11 @@ export default function NewFarmPage() {
       if (!user) throw new Error("Not authenticated")
 
       const { error } = await supabase.from("farms").insert({
-        user_id: user.id,
+        owner_id: user.id,
         name: formData.name,
         description: formData.description,
         location: formData.location,
-        total_area: Number.parseFloat(formData.total_area),
+        area: Number.parseFloat(formData.area),
         latitude: Number.parseFloat(formData.latitude),
         longitude: Number.parseFloat(formData.longitude),
       })
@@ -161,8 +161,8 @@ export default function NewFarmPage() {
                 id="area"
                 type="number"
                 step="0.01"
-                value={formData.total_area}
-                onChange={(e) => setFormData({ ...formData, total_area: e.target.value })}
+                value={formData.area}
+                onChange={(e) => setFormData({ ...formData, area: e.target.value })}
                 placeholder={t[lang].areaPlaceholder}
                 required
               />
