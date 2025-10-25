@@ -37,6 +37,7 @@
     "vercel:deploy": "node scripts/vercel-trigger-deploy.mjs",
     "vercel:check": "node scripts/vercel-readiness.mjs",
     "git:sync": "node scripts/git-auto-sync.mjs",
+    "git:branches": "node scripts/git-branch-health.mjs",
     "vercel:deploy:direct": "node scripts/vercel-direct-deploy.mjs",
     "vercel:emergency": "node scripts/vercel-emergency-publish.mjs"
   },

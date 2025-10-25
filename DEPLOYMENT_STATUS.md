@@ -48,7 +48,17 @@ Summary: 0 passed, 2 warnings, 2 failed checks.
 Resolve failed checks before attempting to trigger or monitor production deployments.
 ```
 
-## 4. Next steps to publish
+## 4. Branch alignment check
+
+قبل متابعة أي عملية نشر، تحقق من تباعد الفروع عبر:
+
+```bash
+pnpm git:branches
+```
+
+سيظهر التقرير ما إذا كان الفرع الحالي متقدّمًا، متأخرًا أو متباعدًا عن الفرع البعيد، مع توصيات لحل التعارضات. عالج أي تحذيرات (خاصة `diverged` أو `behind`) قبل محاولة النشر.
+
+## 5. Next steps to publish
 
 1. Configure Git remotes and push the current branch (استخدم `pnpm git:sync` لتوصيل المستودع تلقائيًا عندما يتوفر عنوان HTTPS مرفق برمز الوصول).
 2. Export Vercel credentials in the terminal (or add them to your CI secrets):
