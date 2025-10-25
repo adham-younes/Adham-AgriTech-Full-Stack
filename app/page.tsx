@@ -48,6 +48,9 @@ export default function HomePage() {
               <Link href="/dashboard/satellite" className="hover:text-white transition-colors">
                 Satellites
               </Link>
+              <Link href="/ops/deployments" className="hover:text-white transition-colors">
+                Ops Center
+              </Link>
             </nav>
           </div>
           <div className="flex items-center gap-3">

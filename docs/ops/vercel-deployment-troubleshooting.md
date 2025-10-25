@@ -4,7 +4,9 @@ This guide explains how to diagnose and stabilise automated deployments for the 
 
 ## 1. Quick status check
 
-Run the inspection script to obtain a real-time view of the latest deployments.
+Visit the new [Deployment Control Room](/ops/deployments) for a live, auto-refreshing stream of Vercel releases. It surfaces production-ready builds, queued jobs, and failure telemetry directly inside the platform UI.
+
+Prefer the terminal? Run the inspection script to obtain a real-time view of the latest deployments.
 
 ```bash
 node scripts/vercel-deploy-status.mjs --project <project-id-or-name>
