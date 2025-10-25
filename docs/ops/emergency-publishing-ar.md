@@ -10,6 +10,7 @@
    - `VERCEL_TOKEN` – رمز وصول يمتلك صلاحية **deploy** أو **manage** للمشروع. يمكن إصدار الرمز من لوحة التحكم باتباع دليل [Vercel CLI](https://vercel.com/docs/cli#authentication) أو أوامر `vercel login`.
    - `VERCEL_PROJECT_ID` أو `VERCEL_PROJECT` – معرّف المشروع أو اسمه داخل Vercel. ستجده في صفحة إعدادات المشروع أو من خلال ملف `.vercel/project.json` بعد تشغيل `vercel link` كما هو موضح في [وثائق ربط المشروع](https://vercel.com/docs/cli/link).
    - (اختياري) `VERCEL_TEAM_ID` إذا كان المشروع تحت فريق. يمكن نسخه من صفحة الفريق في Vercel أو من إعدادات المشروع.
+   - (اختياري عند الحاجة) `VERCEL_PROTECTION_BYPASS_SECRET` – السر الخاص بتجاوز حماية النشر التلقائي. استخدم القيمة المنشأة من إعدادات "Deployment Protection" داخل Vercel، واحفظها في متغير بيئة فقط.
    - (اختياري لكن مهم) `GIT_REMOTE_URL` مع عنوان HTTPS يحتوي على رمز الوصول أو الـPAT حتى يتمكن السكربت من إضافة الريموت ودفع الفروع، أو يمكنك إعداد الريموت يدويًا بالأمر `git remote add origin <url>` ثم استخدام `git push`.
 
 2. إذا كنت تحتاج لتمرير فرع محدد أو اسم ريموت مختلف، أضف `GIT_BRANCH` و`GIT_REMOTE_NAME`. وللدفع الأول لفرع جديد، اجعل `GIT_SET_UPSTREAM=true` (أو استخدم `git push -u origin <branch>` مرة واحدة يدويًا).
@@ -67,6 +68,7 @@ pnpm vercel:emergency --skip-build
 بعد النجاح، استخدم إحدى الطرق التالية للتأكد من أن النطاق أصبح على آخر نسخة:
 
 - تشغيل `pnpm vercel:status --prod --wait 120` مع نفس متغيرات البيئة للتحقق من حالة آخر نشر.
+- عند اختبار نطاق محمي، مرر الرأس `x-vercel-protection-bypass` باستخدام السر المحفوظ في `VERCEL_PROTECTION_BYPASS_SECRET` لضمان الوصول أثناء الفحص.
 - زيارة صفحة [غرفة التحكم في النشر](/ops/deployments) داخل المنصة لمراقبة التايملاين والرسوم البيانية المباشرة.
 - مراجعة لوحة مراقبة Vercel الرسمية من خلال [صفحة Deployments](https://vercel.com/dashboard) للتأكد من نجاح البناء وعدم وجود أخطاء.
 

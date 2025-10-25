@@ -20,6 +20,8 @@ const token = getValue('--token') || process.env.VERCEL_TOKEN;
 const project =
   getValue('--project') || process.env.VERCEL_PROJECT || process.env.VERCEL_PROJECT_ID;
 const org = getValue('--org') || process.env.VERCEL_TEAM_ID || process.env.VERCEL_ORG_ID;
+const protectionBypass =
+  getValue('--protection-bypass') || process.env.VERCEL_PROTECTION_BYPASS_SECRET;
 
 if (!token && !dryRun) {
   console.error('❌  يجب ضبط `VERCEL_TOKEN` أو تمرير `--token` قبل محاولة النشر المباشر.');
@@ -31,9 +33,14 @@ const run = (command, options = {}) => {
     console.log(`↗️  [DRY RUN] ${command}`);
     return;
   }
-  const envWithToken = token
-    ? { ...process.env, VERCEL_TOKEN: token }
-    : { ...process.env };
+  const envWithToken = { ...process.env };
+  if (token) {
+    envWithToken.VERCEL_TOKEN = token;
+  }
+  if (protectionBypass) {
+    envWithToken.VERCEL_AUTOMATION_BYPASS_SECRET = protectionBypass;
+    envWithToken.VERCEL_PROTECTION_BYPASS_SECRET = protectionBypass;
+  }
   execSync(command, { stdio: 'inherit', env: envWithToken, ...options });
 };
 

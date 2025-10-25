@@ -12,6 +12,13 @@ checks.push(
   ),
 )
 checks.push(checkEnv("VERCEL_TEAM_ID", "Vercel team ID", { optional: true }))
+checks.push(
+  checkEnv(
+    "VERCEL_PROTECTION_BYPASS_SECRET",
+    "Deployment protection bypass secret (required when Vercel protection is enabled)",
+    { optional: true },
+  ),
+)
 checks.push(checkGitRemote())
 
 const failed = checks.filter((check) => check.status === "fail")
