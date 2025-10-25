@@ -15,7 +15,7 @@ node scripts/vercel-deploy-status.mjs --project <project-id-or-name>
 Set the following environment variables to avoid passing flags each time:
 
 - `VERCEL_TOKEN` – personal or team access token with **read** permission.
-- `VERCEL_PROJECT` – Vercel project ID or slug.
+- `VERCEL_PROJECT` / `VERCEL_PROJECT_ID` – Vercel project ID or slug.
 - `VERCEL_TEAM_ID` – (optional) team scope when the project belongs to an organisation.
 
 Example with polling until the active build finishes:
@@ -27,6 +27,20 @@ node scripts/vercel-deploy-status.mjs --prod --wait 120
 ```
 
 The command exits with a non-zero status when a deployment is in the `ERROR`/`FAILED` state so it can be wired into CI monitors.
+
+Need to force a publish? Trigger a fresh production rollout directly from the workspace whenever Vercel misses a webhook.
+
+```bash
+# Option A – use a deploy hook URL
+node scripts/vercel-trigger-deploy.mjs --deploy-hook https://api.vercel.com/v1/integrations/deploy/... 
+
+# Option B – redeploy the last successful production build via the Vercel API
+export VERCEL_TOKEN=***
+export VERCEL_PROJECT_ID=prj_***
+node scripts/vercel-trigger-deploy.mjs --target production
+```
+
+Add `--dry-run` to preview the action or `--json` to integrate the result into automation pipelines.
 
 ## 2. Interpret the output
 
