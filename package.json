@@ -34,7 +34,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "vercel:status": "node scripts/vercel-deploy-status.mjs",
-    "vercel:deploy": "node scripts/vercel-trigger-deploy.mjs"
+    "vercel:deploy": "node scripts/vercel-trigger-deploy.mjs",
+    "vercel:check": "node scripts/vercel-readiness.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

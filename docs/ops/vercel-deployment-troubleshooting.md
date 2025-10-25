@@ -12,6 +12,14 @@ Prefer the terminal? Run the inspection script to obtain a real-time view of the
 node scripts/vercel-deploy-status.mjs --project <project-id-or-name>
 ```
 
+Before reaching out to the Vercel API, confirm that the workspace is wired with the necessary credentials and Git remotes:
+
+```bash
+pnpm vercel:check
+```
+
+This readiness report fails fast when `VERCEL_TOKEN`, `VERCEL_PROJECT`/`VERCEL_PROJECT_ID`, or the production remote are missing so you can fix them before attempting a redeploy.
+
 Set the following environment variables to avoid passing flags each time:
 
 - `VERCEL_TOKEN` – personal or team access token with **read** permission.
