@@ -16,6 +16,12 @@ import {
   Globe,
   BrainCircuit,
   ArrowUpRight,
+  ShoppingCart,
+  Layers,
+  Workflow,
+  ShieldCheck,
+  Cpu,
+  BookOpen,
 } from "lucide-react"
 import LanguageToggle from "@/components/language-toggle"
 import { BetaSignupForm } from "@/components/beta-signup-form"
@@ -26,9 +32,35 @@ export default function HomePage() {
     <div className="flex min-h-screen flex-col bg-background">
       {/* Header with language toggle */}
       <header className="sticky top-0 z-50 border-b border-primary/20 bg-background/80 backdrop-blur-xl px-4 sm:px-6 py-4">
-        <div className="mx-auto max-w-7xl flex items-center justify-between">
-          <div className="text-xl sm:text-2xl font-bold text-primary">Adham AgriTech</div>
-          <LanguageToggle />
+        <div className="mx-auto max-w-7xl flex items-center justify-between gap-4">
+          <div className="flex items-center gap-6">
+            <div className="text-xl sm:text-2xl font-bold text-primary">Adham AgriTech</div>
+            <nav className="hidden md:flex items-center gap-5 text-sm text-gray-300">
+              <Link href="/dashboard" className="hover:text-white transition-colors">
+                Platform
+              </Link>
+              <Link href="/marketplace" className="hover:text-white transition-colors">
+                Marketplace
+              </Link>
+              <Link href="/docs" className="hover:text-white transition-colors">
+                Knowledge
+              </Link>
+              <Link href="/dashboard/satellite" className="hover:text-white transition-colors">
+                Satellites
+              </Link>
+            </nav>
+          </div>
+          <div className="flex items-center gap-3">
+            <Button
+              asChild
+              size="sm"
+              variant="outline"
+              className="glass-card border-primary/30 bg-transparent text-xs sm:text-sm"
+            >
+              <Link href="/marketplace">Global Inputs</Link>
+            </Button>
+            <LanguageToggle />
+          </div>
         </div>
       </header>
 
@@ -174,6 +206,51 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="relative px-4 sm:px-6 py-12 sm:py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-background to-primary/5" />
+        <div className="relative z-10 mx-auto max-w-6xl">
+          <div className="mb-10 sm:mb-14 text-center">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
+              Commerce rails for a planetary farm supply chain
+            </h2>
+            <p className="mx-auto mt-4 max-w-3xl text-sm sm:text-base text-gray-400">
+              Build an e-commerce spine that fuses Alibaba, Amazon Business, and local cooperatives. Real-time catalogues, fulfilment telemetry, and localized payments keep every grower connected to trusted inputs.
+            </p>
+          </div>
+          <div className="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <GuidelineCard
+              icon={<ShoppingCart className="h-7 w-7" />}
+              title="Unified procurement"
+              description="A single buying lane orchestrates seeds, fertigation rigs, biologicals, and hardware with transparent landed costs."
+              points={["Streamlined checkout across Alibaba + Amazon", "Automated shipping & customs documents", "Traceable sourcing via blockchain credentials"]}
+            />
+            <GuidelineCard
+              icon={<Layers className="h-7 w-7" />}
+              title="Composable APIs"
+              description="Modular adapters normalize price, availability, and compliance metadata before surfacing it to dashboards and mobile apps."
+              points={["Background cron sync keeps SKUs fresh", "Webhook relays update ERP and cooperative stores", "Localized tax & subsidy rules pluggable per region"]}
+            />
+            <GuidelineCard
+              icon={<Workflow className="h-7 w-7" />}
+              title="Logistics intelligence"
+              description="Live telemetry blends courier events with farm geofences to forecast delivery windows and cold-chain risks."
+              points={["Predictive ETAs with satellite weather overlays", "Incident routing to agronomists + farmers", "SMS/WhatsApp nudges for approvals and payments"]}
+            />
+          </div>
+          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Button asChild size="lg" className="shadow-3d shadow-primary/50 hover:shadow-primary/70">
+              <Link href="/marketplace">
+                Launch Marketplace
+                <ArrowUpRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+            <p className="text-xs sm:text-sm text-primary/70">
+              Auto-deploys on Vercel — connect API keys via environment variables to go live instantly.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section className="relative px-4 sm:px-6 py-12 sm:py-20">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-background to-primary/5" />
         <div className="relative z-10 mx-auto max-w-6xl">
@@ -263,6 +340,40 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="relative px-4 sm:px-6 py-12 sm:py-20">
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
+        <div className="relative z-10 mx-auto max-w-6xl">
+          <div className="mb-10 text-center">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
+              Engineering playbook inspired by global agritech leaders
+            </h2>
+            <p className="mx-auto mt-4 max-w-3xl text-sm sm:text-base text-gray-400">
+              Synthesize the winning moves from Agrio, FarmLogs, Climate FieldView, Taranis, CropIn, AgroStar, and the wider top-10 smart farming apps into Adham AgriTech’s architecture.
+            </p>
+          </div>
+          <div className="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <GuidelineCard
+              icon={<ShieldCheck className="h-7 w-7" />}
+              title="Security & trust"
+              description="Zero-trust auth, farmer identity wallets, and on-chain traceability mirror enterprise-grade agrifood platforms."
+              points={["Implement OAuth2 + passkeys with device attestations", "Immutable audit trails for crop treatments & subsidies", "Regional data residency with field-level encryption"]}
+            />
+            <GuidelineCard
+              icon={<Cpu className="h-7 w-7" />}
+              title="AI-first agronomy"
+              description="Deploy transformers for disease triage, diffusion models for canopy simulation, and physics-informed NDVI engines."
+              points={["On-device inference via TensorFlow Lite & Core ML", "Server-side fine-tuning with active learning loops", "Satellite + drone fusion pipelines with QA automation"]}
+            />
+            <GuidelineCard
+              icon={<BookOpen className="h-7 w-7" />}
+              title="Education & community"
+              description="Combine multilingual academies, farmer social hubs, and expert livestreams to elevate agronomic literacy."
+              points={["Micro-learning capsules aligned with crop cycles", "In-app translation and voice guidance for 20+ languages", "Regional success stories powering community trust"]}
+            />
+          </div>
+        </div>
+      </section>
+
       <section className="px-4 sm:px-6 py-12 sm:py-20 relative">
         <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/10 to-background" />
         <div className="mx-auto max-w-4xl text-center relative z-10">
@@ -318,6 +429,35 @@ function FeatureCard({
       </div>
       <h3 className="mb-2 text-lg sm:text-xl font-semibold text-white">{title}</h3>
       <p className="text-sm sm:text-base text-gray-400 leading-relaxed">{description}</p>
+    </div>
+  )
+}
+
+function GuidelineCard({
+  icon,
+  title,
+  description,
+  points,
+}: {
+  icon: React.ReactNode
+  title: string
+  description: string
+  points: string[]
+}) {
+  return (
+    <div className="glass-card flex h-full flex-col gap-4 rounded-2xl border border-primary/20 bg-black/40 p-6 shadow-3d">
+      <div className="flex items-center gap-3 text-primary">
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/15 text-primary shadow-inner">
+          {icon}
+        </div>
+        <h3 className="text-lg font-semibold text-white">{title}</h3>
+      </div>
+      <p className="text-sm text-gray-400 leading-relaxed">{description}</p>
+      <ul className="mt-auto list-disc space-y-1 pl-5 text-xs text-primary/70">
+        {points.map((point) => (
+          <li key={point}>{point}</li>
+        ))}
+      </ul>
     </div>
   )
 }
