@@ -1,47 +1,41 @@
-import { createServerClient } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
 
+const PUBLIC_PATH_PREFIXES = ["/marketplace", "/partners", "/docs"]
+
+function isAuthPath(pathname: string) {
+  return pathname === "/auth" || pathname.startsWith("/auth/")
+}
+
+function isPublicPath(pathname: string) {
+  if (pathname === "/") {
+    return true
+  }
+
+  return PUBLIC_PATH_PREFIXES.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`))
+}
+
+function hasSupabaseSessionCookie(request: NextRequest) {
+  return request.cookies
+    .getAll()
+    .some((cookie) => cookie.name === "sb-access-token" || cookie.name.endsWith("-auth-token"))
+}
+
 export async function updateSession(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({
-    request,
-  })
+  const isAuthenticated = hasSupabaseSessionCookie(request)
+  const pathname = request.nextUrl.pathname
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll()
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({
-            request,
-          })
-          cookiesToSet.forEach(({ name, value, options }) => supabaseResponse.cookies.set(name, value, options))
-        },
-      },
-    },
-  )
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  // Redirect to login if not authenticated and trying to access protected routes
-  if (!user && !request.nextUrl.pathname.startsWith("/auth") && request.nextUrl.pathname !== "/") {
+  if (!isAuthenticated && !isAuthPath(pathname) && !isPublicPath(pathname)) {
     const url = request.nextUrl.clone()
     url.pathname = "/auth/login"
+    url.searchParams.set("redirectedFrom", pathname)
     return NextResponse.redirect(url)
   }
 
-  // Redirect to dashboard if authenticated and trying to access auth pages
-  if (user && request.nextUrl.pathname.startsWith("/auth")) {
+  if (isAuthenticated && isAuthPath(pathname)) {
     const url = request.nextUrl.clone()
     url.pathname = "/dashboard"
     return NextResponse.redirect(url)
   }
 
-  return supabaseResponse
+  return NextResponse.next()
 }
