@@ -32,7 +32,8 @@
     "db:reset": "psql -h your-db-host -U postgres -d postgres -f scripts/reset-database.sql",
     "type-check": "tsc --noEmit",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "vercel:status": "node scripts/vercel-deploy-status.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
