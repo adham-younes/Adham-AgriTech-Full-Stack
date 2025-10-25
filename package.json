@@ -32,7 +32,13 @@
     "db:reset": "psql -h your-db-host -U postgres -d postgres -f scripts/reset-database.sql",
     "type-check": "tsc --noEmit",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "vercel:status": "node scripts/vercel-deploy-status.mjs",
+    "vercel:deploy": "node scripts/vercel-trigger-deploy.mjs",
+    "vercel:check": "node scripts/vercel-readiness.mjs",
+    "git:sync": "node scripts/git-auto-sync.mjs",
+    "vercel:deploy:direct": "node scripts/vercel-direct-deploy.mjs",
+    "vercel:emergency": "node scripts/vercel-emergency-publish.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
