@@ -2,16 +2,6 @@
   "version": 2,
   "name": "adham-agritech",
   "alias": ["adham-agritech.com", "www.adham-agritech.com"],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
-  ],
   "functions": {
     "app/api/**/*.ts": {
       "maxDuration": 30
